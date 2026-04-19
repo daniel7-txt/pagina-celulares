@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechStore GT</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>📍 Tienda física · C.C. Miraflores Local 42, Zona 11, Guatemala City</span>
+    <div class="topbar-right">
+      <span>📞 +502 2345-6789</span>
+      <span>⏰ Lun–Sáb 9am–7pm</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── HEADER ── -->
+<header id="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">T</div>
+      <div class="logo-text-wrap">
+        <span class="logo-name">TechStore</span>
+        <span class="logo-country">Guatemala</span>
+      </div>
+    </a>
+    <nav class="cat-nav" id="cat-nav">
+      <button class="cat-btn active" data-cat="celulares">📱 Celulares</button>
+      <button class="cat-btn" data-cat="auriculares">🎧 Auriculares</button>
+      <button class="cat-btn" data-cat="relojes">⌚ Relojes</button>
+      <button class="cat-btn" data-cat="bocinas">🔊 Bocinas</button>
+      <button class="cat-btn" data-cat="cargadores">⚡ Cargadores</button>
+      <button class="cat-btn" data-cat="accesorios">🎒 Accesorios</button>
+    </nav>
+    <div class="header-end">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Buscar productos..."/>
+      </div>
+      <button class="admin-btn" id="btn-admin-toggle">Admin</button>
+      <button class="ham-btn" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav hidden" id="mobile-nav">
+    <button class="cat-btn active" data-cat="celulares">📱 Celulares</button>
+    <button class="cat-btn" data-cat="auriculares">🎧 Auriculares</button>
+    <button class="cat-btn" data-cat="relojes">⌚ Relojes</button>
+    <button class="cat-btn" data-cat="bocinas">🔊 Bocinas</button>
+    <button class="cat-btn" data-cat="cargadores">⚡ Cargadores</button>
+    <button class="cat-btn" data-cat="accesorios">🎒 Accesorios</button>
+    <div class="mobile-search">
+      <span>🔍</span>
+      <input type="text" id="search-mobile" placeholder="Buscar..."/>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">🇬🇹 Tienda oficial en Guatemala</p>
+      <h1 class="hero-h1">La tecnología<br/> que buscas,<br/><em>al mejor precio</em></h1>
+      <p class="hero-desc">Celulares, auriculares, relojes inteligentes, bocinas, cargadores y accesorios. Todo original, todo con garantía.</p>
+      <div class="hero-actions">
+        <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+        <a href="#tienda" class="btn-secondary">📍 Nuestra tienda</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge">✅ Productos originales</div>
+        <div class="hero-badge">🔧 Servicio técnico</div>
+        <div class="hero-badge">💳 Todas las tarjetas</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-glow"></div>
+      <div class="hero-grid">
+        <div class="hero-card c1">📱<span>Celulares</span></div>
+        <div class="hero-card c2">🎧<span>Auriculares</span></div>
+        <div class="hero-card c3">⌚<span>Relojes</span></div>
+        <div class="hero-card c4">🔊<span>Bocinas</span></div>
+        <div class="hero-card c5">⚡<span>Cargadores</span></div>
+        <div class="hero-card c6">🎒<span>Accesorios</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATÁLOGO ── -->
+<section id="catalogo" class="catalog-section">
+  <div class="catalog-inner">
+    <div class="catalog-header">
+      <div>
+        <h2 class="catalog-title" id="catalog-title">📱 Celulares</h2>
+        <p class="catalog-sub" id="catalog-sub">Los mejores smartphones del mercado</p>
+      </div>
+      <span class="catalog-count" id="catalog-count">0 productos</span>
+    </div>
+    <div id="product-grid" class="product-grid"></div>
+    <div id="empty-state" class="empty-state hidden">
+      <div id="empty-icon" class="empty-icon">📱</div>
+      <h3 id="empty-title">Sin productos aún</h3>
+      <p>El administrador aún no ha agregado productos en esta categoría.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── STORE INFO ── -->
+<section id="tienda" class="store-section">
+  <div class="store-inner">
+    <div class="store-left">
+      <p class="section-label">📍 Visítanos</p>
+      <h2 class="store-h2">Estamos en<br/>Guatemala City</h2>
+      <p class="store-p">Visita nuestra tienda y prueba los productos antes de comprar. Nuestro equipo te asesora sin compromiso.</p>
+      <div class="store-grid">
+        <div class="store-card"><div class="store-card-icon">📌</div><div><strong>Dirección</strong><p>C.C. Miraflores, Local 42<br/>Calzada Roosevelt, Zona 11<br/>Guatemala City</p></div></div>
+        <div class="store-card"><div class="store-card-icon">🕐</div><div><strong>Horario</strong><p>Lun – Vie: 9:00am – 7:00pm<br/>Sáb: 9:00am – 6:00pm<br/>Dom: 10:00am – 4:00pm</p></div></div>
+        <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 2345-6789<br/>WhatsApp: +502 5555-0000<br/>techstoregt@gmail.com</p></div></div>
+        <div class="store-card"><div class="store-card-icon">🔧</div><div><strong>Servicios</strong><p>Cambio de pantallas<br/>Cambio de baterías<br/>Desbloqueado de equipos</p></div></div>
+      </div>
+      <a href="https://maps.google.com/?q=Centro+Comercial+Miraflores+Guatemala" target="_blank" class="btn-primary" style="margin-top:32px;display:inline-flex;">Ver en Google Maps →</a>
+    </div>
+    <div class="store-right">
+      <div class="map-box">
+        <div class="map-pin-anim">📍</div>
+        <p class="map-name">C.C. Miraflores</p>
+        <p class="map-zone">Zona 11, Guatemala City</p>
+        <div class="map-hours">
+          <div class="map-hour-row"><span>Lunes – Viernes</span><span>9:00am – 7:00pm</span></div>
+          <div class="map-hour-row"><span>Sábado</span><span>9:00am – 6:00pm</span></div>
+          <div class="map-hour-row"><span>Domingo</span><span>10:00am – 4:00pm</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCT DETAIL MODAL ── -->
+<div id="modal-product" class="modal-overlay hidden">
+  <div class="modal-shell">
+    <button class="modal-x" id="btn-close-modal">✕</button>
+    <div id="modal-content" class="modal-content-wrap"></div>
+  </div>
+</div>
+
+<!-- ── ZOOM OVERLAY ── -->
+<div id="zoom-overlay" class="zoom-overlay hidden">
+  <div class="zoom-bg" id="zoom-bg"></div>
+  <div class="zoom-container" id="zoom-container">
+    <img id="zoom-img" src="" alt="zoom"/>
+    <div class="zoom-lens" id="zoom-lens"></div>
+  </div>
+  <div class="zoom-result-wrap">
+    <div class="zoom-result" id="zoom-result"></div>
+  </div>
+  <button class="zoom-close" id="btn-close-zoom">✕</button>
+  <p class="zoom-hint">Mueve el cursor sobre la imagen · Click para cerrar</p>
+</div>
+
+<!-- ── ADMIN OVERLAY ── -->
+<div id="admin-overlay" class="admin-overlay hidden">
+
+  <!-- LOGIN -->
+  <div id="login-panel" class="login-card">
+    <button class="card-x" id="btn-close-admin-panel">✕</button>
+    <div class="login-logo">◈</div>
+    <h2 class="login-title">Panel Admin</h2>
+    <p class="login-sub">Acceso solo para personal autorizado</p>
+    <div id="login-msg" class="alert hidden"></div>
+    <div class="field-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-user" placeholder="admin@techstoregt.com" autocomplete="off"/>
+    </div>
+    <div class="field-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••"/>
+    </div>
+    <button class="btn-primary full" id="btn-login">Entrar</button>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel" class="admin-panel hidden">
+    <div class="admin-header">
+      <div class="logo" style="gap:10px;display:flex;align-items:center;">
+        <div class="logo-mark" style="width:32px;height:32px;font-size:14px;">T</div>
+        <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;">Panel Admin</span>
+      </div>
+      <button class="btn-danger-outline" id="btn-logout">Cerrar sesión</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-col admin-col-form">
+        <h3 class="admin-col-title">Agregar producto</h3>
+        <div id="form-msg" class="alert hidden"></div>
+        <div class="field-group">
+          <label>Categoría *</label>
+          <div class="cat-pills" id="cat-selector">
+            <button class="cat-pill active" data-sel="celulares">📱 Celulares</button>
+            <button class="cat-pill" data-sel="auriculares">🎧 Auriculares</button>
+            <button class="cat-pill" data-sel="relojes">⌚ Relojes</button>
+            <button class="cat-pill" data-sel="bocinas">🔊 Bocinas</button>
+            <button class="cat-pill" data-sel="cargadores">⚡ Cargadores</button>
+            <button class="cat-pill" data-sel="accesorios">🎒 Accesorios</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Imágenes <span class="label-hint">(máx. 6)</span></label>
+          <div class="img-gallery-row" id="multi-img-gallery">
+            <button class="img-add-thumb" id="add-img-slot"><span>+</span><small>Agregar</small></button>
+          </div>
+          <div class="img-input-panel hidden" id="img-add-controls">
+            <div class="tab-row">
+              <button class="tab-btn active" data-tab="url">🔗 URL</button>
+              <button class="tab-btn" data-tab="file">📁 Archivo</button>
+            </div>
+            <div id="tab-url" class="tab-pane"><input type="url" id="img-url-input" placeholder="https://..."/></div>
+            <div id="tab-file" class="tab-pane hidden"><input type="file" id="img-file-input" accept="image/*" multiple/></div>
+            <div class="img-preview-strip" id="img-add-preview">
+              <span id="img-add-ph">Ingresa una URL o selecciona un archivo</span>
+              <img id="img-add-preview-img" class="hidden" alt=""/>
+            </div>
+            <div class="panel-actions">
+              <button class="btn-primary" id="btn-confirm-img" style="flex:1;margin:0;border-radius:10px;padding:10px 0;">✓ Añadir imagen</button>
+              <button class="btn-ghost-sm" id="btn-cancel-img">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Colores disponibles *</label>
+          <div class="color-row">
+            <input type="text" id="color-input-text" placeholder="Negro, Blanco, Azul..."/>
+            <button class="btn-ghost-sm" id="btn-add-color">+ Agregar</button>
+          </div>
+          <div class="color-tag-list" id="color-chips"></div>
+        </div>
+        <div class="field-row">
+          <div class="field-group"><label>Nombre *</label><input type="text" id="prod-name" placeholder="Ej: iPhone 15 Pro"/></div>
+          <div class="field-group"><label>Marca *</label><input type="text" id="prod-brand" placeholder="Ej: Apple"/></div>
+        </div>
+        <div class="field-row">
+          <div class="field-group"><label>Precio (Q) *</label><input type="number" id="prod-price" placeholder="0.00" min="0"/></div>
+          <div class="field-group">
+            <label>Estado</label>
+            <select id="prod-estado">
+              <option value="disponible">✅ Disponible</option>
+              <option value="pocas">⚠️ Pocas unidades</option>
+              <option value="agotado">❌ Agotado</option>
+              <option value="preventa">🔔 Preventa</option>
+            </select>
+          </div>
+        </div>
+        <div id="specs-celulares" class="specs-block">
+          <div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="prod-storage" placeholder="256GB"/></div><div class="field-group"><label>RAM *</label><input type="text" id="prod-ram" placeholder="8GB"/></div></div>
+          <div class="field-group"><label>Procesador *</label><input type="text" id="prod-cpu" placeholder="Apple A17 Pro"/></div>
+          <div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="prod-screen" placeholder="6.1&quot; OLED 120Hz"/></div><div class="field-group"><label>Batería</label><input type="text" id="prod-battery" placeholder="4422 mAh"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="prod-camara" placeholder="48MP"/></div><div class="field-group"><label>Sistema</label><input type="text" id="prod-os" placeholder="iOS 17"/></div></div>
+        </div>
+        <div id="specs-auriculares" class="specs-block hidden">
+          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-auri" placeholder="Over-ear, In-ear"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect" placeholder="Bluetooth 5.3"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-autonomia" placeholder="30 horas"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="prod-anc" placeholder="ANC activa"/></div></div>
+        </div>
+        <div id="specs-relojes" class="specs-block hidden">
+          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-reloj" placeholder="Smartwatch"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="prod-compat" placeholder="iOS / Android"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-bat-reloj" placeholder="7 días"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="prod-resist" placeholder="5 ATM"/></div></div>
+        </div>
+        <div id="specs-bocinas" class="specs-block hidden">
+          <div class="field-row"><div class="field-group"><label>Potencia *</label><input type="text" id="prod-potencia" placeholder="40W"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect-boc" placeholder="Bluetooth 5.1"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-auto-boc" placeholder="20 horas"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="prod-agua" placeholder="IPX7"/></div></div>
+        </div>
+        <div id="specs-cargadores" class="specs-block hidden">
+          <div class="field-row"><div class="field-group"><label>Tipo de carga *</label><input type="text" id="prod-tipo-carga" placeholder="USB-C, MagSafe"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="prod-watts" placeholder="65W"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Compatibilidad</label><input type="text" id="prod-compat-carg" placeholder="Universal"/></div><div class="field-group"><label>Puertos</label><input type="text" id="prod-puertos" placeholder="2x USB-C"/></div></div>
+        </div>
+        <div id="specs-accesorios" class="specs-block hidden">
+          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-acc" placeholder="Funda, Cable..."/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="prod-compat-acc" placeholder="iPhone 15"/></div></div>
+          <div class="field-group"><label>Material</label><input type="text" id="prod-material" placeholder="Silicona, Cuero..."/></div>
+        </div>
+        <div class="field-group"><label>Descripción</label><textarea id="prod-desc" rows="3" placeholder="Describe el producto..."></textarea></div>
+        <button class="btn-primary full" id="btn-add-product" style="margin-top:4px;">+ Agregar producto</button>
+      </div>
+      <div class="admin-col admin-col-list">
+        <div class="admin-filter-row" id="admin-cat-filter">
+          <button class="filter-pill active" data-admin-cat="todos">Todos</button>
+          <button class="filter-pill" data-admin-cat="celulares">📱</button>
+          <button class="filter-pill" data-admin-cat="auriculares">🎧</button>
+          <button class="filter-pill" data-admin-cat="relojes">⌚</button>
+          <button class="filter-pill" data-admin-cat="bocinas">🔊</button>
+          <button class="filter-pill" data-admin-cat="cargadores">⚡</button>
+          <button class="filter-pill" data-admin-cat="accesorios">🎒</button>
+        </div>
+        <h3 class="admin-col-title">Productos <span id="admin-count" class="count-pill">0</span></h3>
+        <div id="admin-product-list" class="admin-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT MODAL ── -->
+<div id="modal-edit" class="modal-overlay hidden" style="z-index:500;">
+  <div class="modal-shell" style="max-width:760px;">
+    <button class="modal-x" id="btn-close-edit">✕</button>
+    <div style="padding:32px;">
+      <h2 class="edit-title">Editar producto</h2>
+      <p id="edit-cat-label" class="edit-cat-sub"></p>
+      <div id="edit-msg" class="alert hidden"></div>
+      <div class="field-group">
+        <label>Imágenes</label>
+        <div class="img-gallery-row" id="edit-multi-img-gallery">
+          <button class="img-add-thumb" id="edit-add-img-slot"><span>+</span><small>Agregar</small></button>
+        </div>
+        <div class="img-input-panel hidden" id="edit-img-add-controls">
+          <div class="tab-row">
+            <button class="tab-btn active" data-edit-img-tab="url">🔗 URL</button>
+            <button class="tab-btn" data-edit-img-tab="file">📁 Archivo</button>
+          </div>
+          <div id="edit-tab-url"><input type="url" id="edit-img-url-input" placeholder="https://..."/></div>
+          <div id="edit-tab-file" class="hidden"><input type="file" id="edit-img-file-input" accept="image/*" multiple/></div>
+          <div class="img-preview-strip"><span id="edit-img-add-ph">Ingresa URL o archivo</span><img id="edit-img-add-preview-img" class="hidden" alt=""/></div>
+          <div class="panel-actions">
+            <button class="btn-primary" id="edit-btn-confirm-img" style="flex:1;margin:0;border-radius:10px;padding:10px 0;">✓ Añadir</button>
+            <button class="btn-ghost-sm" id="edit-btn-cancel-img">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Colores</label>
+        <div class="color-row"><input type="text" id="edit-color-input-text" placeholder="Negro, Blanco..."/><button class="btn-ghost-sm" id="edit-btn-add-color">+ Agregar</button></div>
+        <div class="color-tag-list" id="edit-color-chips"></div>
+      </div>
+      <div class="field-row"><div class="field-group"><label>Nombre *</label><input type="text" id="edit-name"/></div><div class="field-group"><label>Marca *</label><input type="text" id="edit-brand"/></div></div>
+      <div class="field-row"><div class="field-group"><label>Precio (Q) *</label><input type="number" id="edit-price" min="0"/></div><div class="field-group"><label>Estado</label><select id="edit-estado"><option value="disponible">✅ Disponible</option><option value="pocas">⚠️ Pocas unidades</option><option value="agotado">❌ Agotado</option><option value="preventa">🔔 Preventa</option></select></div></div>
+      <div id="edit-specs-celulares" class="specs-block">
+        <div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="edit-storage"/></div><div class="field-group"><label>RAM *</label><input type="text" id="edit-ram"/></div></div>
+        <div class="field-group"><label>Procesador *</label><input type="text" id="edit-cpu"/></div>
+        <div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="edit-screen"/></div><div class="field-group"><label>Batería</label><input type="text" id="edit-battery"/></div></div>
+        <div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="edit-camara"/></div><div class="field-group"><label>Sistema</label><input type="text" id="edit-os"/></div></div>
+      </div>
+      <div id="edit-specs-auriculares" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-auri"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-autonomia"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="edit-anc"/></div></div></div>
+      <div id="edit-specs-relojes" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-reloj"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-bat-reloj"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="edit-resist"/></div></div></div>
+      <div id="edit-specs-bocinas" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Potencia *</label><input type="text" id="edit-potencia"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect-boc"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-auto-boc"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="edit-agua"/></div></div></div>
+      <div id="edit-specs-cargadores" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo carga *</label><input type="text" id="edit-tipo-carga"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="edit-watts"/></div></div><div class="field-row"><div class="field-group"><label>Compatibilidad</label><input type="text" id="edit-compat-carg"/></div><div class="field-group"><label>Puertos</label><input type="text" id="edit-puertos"/></div></div></div>
+      <div id="edit-specs-accesorios" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-acc"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat-acc"/></div></div><div class="field-group"><label>Material</label><input type="text" id="edit-material"/></div></div>
+      <div class="field-group"><label>Descripción</label><textarea id="edit-desc" rows="2"></textarea></div>
+      <input type="hidden" id="edit-id"/>
+      <button class="btn-primary full" id="btn-save-edit" style="margin-top:4px;">💾 Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div class="logo-mark">T</div>
+        <div class="logo-text-wrap"><span class="logo-name">TechStore</span><span class="logo-country">Guatemala</span></div>
+      </div>
+      <p>Tu tienda de tecnología de confianza.<br/>Productos 100% originales con garantía.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Categorías</h4>
+      <a data-cat-footer="celulares">📱 Celulares</a>
+      <a data-cat-footer="auriculares">🎧 Auriculares</a>
+      <a data-cat-footer="relojes">⌚ Relojes</a>
+      <a data-cat-footer="bocinas">🔊 Bocinas</a>
+      <a data-cat-footer="cargadores">⚡ Cargadores</a>
+      <a data-cat-footer="accesorios">🎒 Accesorios</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <p>📞 +502 2345-6789</p>
+      <p>💬 +502 5555-0000</p>
+      <p>✉️ techstoregt@gmail.com</p>
+      <p>📍 C.C. Miraflores, Zona 11</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 TechStore GT · Todos los derechos reservados</div>
+</footer>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
