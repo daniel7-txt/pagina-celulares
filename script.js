@@ -258,6 +258,9 @@ function openModal(p) {
         <span class="card-status-badge ${st.cls}" style="position:static;font-size:12px;padding:5px 12px;">${st.label}</span>
       </div>
       ${p.desc ? `<p class="modal-prod-desc">${p.desc}</p>` : ''}
+      <button class="btn-whatsapp-modal" onclick="window.open('https://wa.me/50254834689?text=Hola%2C%20me%20interesa%20el%20${encodeURIComponent(p.name)}%20%28Q${p.price}%29%2C%20%C2%BFestá%20disponible%3F','_blank')">
+        <i class="fa fa-whatsapp" style="font-size:20px;"></i> Consultar por WhatsApp
+      </button>
       ${(p.colors?.length) ? `
         <div class="color-section">
           <div class="color-section-label">🎨 Colores disponibles</div>
