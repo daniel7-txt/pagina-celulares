@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechStore GT — Tecnología Original</title>
+  <title>TechStore GT</title>
   <link rel="stylesheet" href="styles.css"/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
 <!-- ── TOP BAR ── -->
 <div class="topbar">
   <div class="topbar-inner">
-    <span>📍 C.C. Miraflores Local 42, Zona 11, Guatemala City</span>
+    <span>📍 Tienda física · C.C. Miraflores Local 42, Zona 11, Guatemala City</span>
     <div class="topbar-right">
       <span>📞 +502 2345-6789</span>
       <span>⏰ Lun–Sáb 9am–7pm</span>
@@ -65,45 +65,30 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-bg"></div>
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-tag">🇬🇹 Tienda oficial en Guatemala</div>
-      <h1 class="hero-h1">
-        La tecnología<br/>
-        <span class="line2">que buscas,</span><br/>
-        <em>al mejor precio</em>
-      </h1>
+      <p class="hero-eyebrow">🇬🇹 Tienda oficial en Guatemala</p>
+      <h1 class="hero-h1">La tecnología<br/> que buscas,<br/><em>al mejor precio</em></h1>
       <p class="hero-desc">Celulares, auriculares, relojes inteligentes, bocinas, cargadores y accesorios. Todo original, todo con garantía.</p>
       <div class="hero-actions">
-        <a href="#catalogo" class="btn-primary">Ver catálogo →</a>
+        <a href="#catalogo" class="btn-primary">Ver catálogo</a>
         <a href="#tienda" class="btn-secondary">📍 Nuestra tienda</a>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">500<span>+</span></div>
-          <div class="hero-stat-label">Productos</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">100<span>%</span></div>
-          <div class="hero-stat-label">Original</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">5<span>★</span></div>
-          <div class="hero-stat-label">Calificación</div>
-        </div>
+      <div class="hero-badges">
+        <div class="hero-badge">✅ Productos originales</div>
+        <div class="hero-badge">🔧 Servicio técnico</div>
+        <div class="hero-badge">💳 Todas las tarjetas</div>
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-phone-glow"></div>
-      <div class="hero-grid-cards">
-        <div class="hero-card c1"><div class="hero-card-icon">📱</div><span>Celulares</span></div>
-        <div class="hero-card c2"><div class="hero-card-icon">🎧</div><span>Auriculares</span></div>
-        <div class="hero-card c3"><div class="hero-card-icon">⌚</div><span>Relojes</span></div>
-        <div class="hero-card c4"><div class="hero-card-icon">🔊</div><span>Bocinas</span></div>
-        <div class="hero-card c5"><div class="hero-card-icon">⚡</div><span>Cargadores</span></div>
-        <div class="hero-card c6"><div class="hero-card-icon">🎒</div><span>Accesorios</span></div>
+      <div class="hero-glow"></div>
+      <div class="hero-grid">
+        <div class="hero-card c1">📱<span>Celulares</span></div>
+        <div class="hero-card c2">🎧<span>Auriculares</span></div>
+        <div class="hero-card c3">⌚<span>Relojes</span></div>
+        <div class="hero-card c4">🔊<span>Bocinas</span></div>
+        <div class="hero-card c5">⚡<span>Cargadores</span></div>
+        <div class="hero-card c6">🎒<span>Accesorios</span></div>
       </div>
     </div>
   </div>
@@ -141,7 +126,7 @@
         <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 2345-6789<br/>WhatsApp: +502 5555-0000<br/>techstoregt@gmail.com</p></div></div>
         <div class="store-card"><div class="store-card-icon">🔧</div><div><strong>Servicios</strong><p>Cambio de pantallas<br/>Cambio de baterías<br/>Desbloqueado de equipos</p></div></div>
       </div>
-      <a href="https://maps.google.com/?q=Centro+Comercial+Miraflores+Guatemala" target="_blank" class="btn-primary" style="margin-top:36px;display:inline-flex;">Ver en Google Maps →</a>
+      <a href="https://maps.google.com/?q=Centro+Comercial+Miraflores+Guatemala" target="_blank" class="btn-primary" style="margin-top:32px;display:inline-flex;">Ver en Google Maps →</a>
     </div>
     <div class="store-right">
       <div class="map-box">
@@ -157,11 +142,6 @@
     </div>
   </div>
 </section>
-
-<!-- ── WHATSAPP FLOTANTE ── -->
-<a href="https://wa.me/50254834689?text=Hola%20quiero%20información%20sobre%20un%20producto" class="float-wa" target="_blank">
-  <i class="fa fa-whatsapp"></i>
-</a>
 
 <!-- ── PRODUCT DETAIL MODAL ── -->
 <div id="modal-product" class="modal-overlay hidden">
@@ -182,11 +162,13 @@
     <div class="zoom-result" id="zoom-result"></div>
   </div>
   <button class="zoom-close" id="btn-close-zoom">✕</button>
-  <p class="zoom-hint">Mueve el cursor para hacer zoom · Click para cerrar</p>
+  <p class="zoom-hint">Mueve el cursor sobre la imagen · Click para cerrar</p>
 </div>
 
 <!-- ── ADMIN OVERLAY ── -->
 <div id="admin-overlay" class="admin-overlay hidden">
+
+  <!-- LOGIN -->
   <div id="login-panel" class="login-card">
     <button class="card-x" id="btn-close-admin-panel">✕</button>
     <div class="login-logo">◈</div>
@@ -201,14 +183,15 @@
       <label>Contraseña</label>
       <input type="password" id="login-pass" placeholder="••••••••"/>
     </div>
-    <button class="btn-primary full" id="btn-login">Entrar →</button>
+    <button class="btn-primary full" id="btn-login">Entrar</button>
   </div>
 
+  <!-- ADMIN PANEL -->
   <div id="admin-panel" class="admin-panel hidden">
     <div class="admin-header">
       <div class="logo" style="gap:10px;display:flex;align-items:center;">
-        <div class="logo-mark" style="width:34px;height:34px;font-size:14px;">T</div>
-        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--ink);">Panel Admin</span>
+        <div class="logo-mark" style="width:32px;height:32px;font-size:14px;">T</div>
+        <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;">Panel Admin</span>
       </div>
       <button class="btn-danger-outline" id="btn-logout">Cerrar sesión</button>
     </div>
@@ -280,7 +263,7 @@
           <div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="prod-camara" placeholder="48MP"/></div><div class="field-group"><label>Sistema</label><input type="text" id="prod-os" placeholder="iOS 17"/></div></div>
         </div>
         <div id="specs-auriculares" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-auri" placeholder="Over-ear"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect" placeholder="Bluetooth 5.3"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-auri" placeholder="Over-ear, In-ear"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect" placeholder="Bluetooth 5.3"/></div></div>
           <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-autonomia" placeholder="30 horas"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="prod-anc" placeholder="ANC activa"/></div></div>
         </div>
         <div id="specs-relojes" class="specs-block hidden">
@@ -292,7 +275,7 @@
           <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-auto-boc" placeholder="20 horas"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="prod-agua" placeholder="IPX7"/></div></div>
         </div>
         <div id="specs-cargadores" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo de carga *</label><input type="text" id="prod-tipo-carga" placeholder="USB-C"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="prod-watts" placeholder="65W"/></div></div>
+          <div class="field-row"><div class="field-group"><label>Tipo de carga *</label><input type="text" id="prod-tipo-carga" placeholder="USB-C, MagSafe"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="prod-watts" placeholder="65W"/></div></div>
           <div class="field-row"><div class="field-group"><label>Compatibilidad</label><input type="text" id="prod-compat-carg" placeholder="Universal"/></div><div class="field-group"><label>Puertos</label><input type="text" id="prod-puertos" placeholder="2x USB-C"/></div></div>
         </div>
         <div id="specs-accesorios" class="specs-block hidden">
@@ -321,9 +304,9 @@
 
 <!-- ── EDIT MODAL ── -->
 <div id="modal-edit" class="modal-overlay hidden" style="z-index:500;">
-  <div class="modal-shell" style="max-width:780px;">
+  <div class="modal-shell" style="max-width:760px;">
     <button class="modal-x" id="btn-close-edit">✕</button>
-    <div style="padding:36px;">
+    <div style="padding:32px;">
       <h2 class="edit-title">Editar producto</h2>
       <p id="edit-cat-label" class="edit-cat-sub"></p>
       <div id="edit-msg" class="alert hidden"></div>
@@ -353,7 +336,12 @@
       </div>
       <div class="field-row"><div class="field-group"><label>Nombre *</label><input type="text" id="edit-name"/></div><div class="field-group"><label>Marca *</label><input type="text" id="edit-brand"/></div></div>
       <div class="field-row"><div class="field-group"><label>Precio (Q) *</label><input type="number" id="edit-price" min="0"/></div><div class="field-group"><label>Estado</label><select id="edit-estado"><option value="disponible">✅ Disponible</option><option value="pocas">⚠️ Pocas unidades</option><option value="agotado">❌ Agotado</option><option value="preventa">🔔 Preventa</option></select></div></div>
-      <div id="edit-specs-celulares" class="specs-block"><div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="edit-storage"/></div><div class="field-group"><label>RAM *</label><input type="text" id="edit-ram"/></div></div><div class="field-group"><label>Procesador *</label><input type="text" id="edit-cpu"/></div><div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="edit-screen"/></div><div class="field-group"><label>Batería</label><input type="text" id="edit-battery"/></div></div><div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="edit-camara"/></div><div class="field-group"><label>Sistema</label><input type="text" id="edit-os"/></div></div></div>
+      <div id="edit-specs-celulares" class="specs-block">
+        <div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="edit-storage"/></div><div class="field-group"><label>RAM *</label><input type="text" id="edit-ram"/></div></div>
+        <div class="field-group"><label>Procesador *</label><input type="text" id="edit-cpu"/></div>
+        <div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="edit-screen"/></div><div class="field-group"><label>Batería</label><input type="text" id="edit-battery"/></div></div>
+        <div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="edit-camara"/></div><div class="field-group"><label>Sistema</label><input type="text" id="edit-os"/></div></div>
+      </div>
       <div id="edit-specs-auriculares" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-auri"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-autonomia"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="edit-anc"/></div></div></div>
       <div id="edit-specs-relojes" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-reloj"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-bat-reloj"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="edit-resist"/></div></div></div>
       <div id="edit-specs-bocinas" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Potencia *</label><input type="text" id="edit-potencia"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect-boc"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-auto-boc"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="edit-agua"/></div></div></div>
@@ -370,7 +358,7 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="logo" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div class="logo" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <div class="logo-mark">T</div>
         <div class="logo-text-wrap"><span class="logo-name">TechStore</span><span class="logo-country">Guatemala</span></div>
       </div>
@@ -396,6 +384,7 @@
   <div class="footer-bottom">© 2025 TechStore GT · Todos los derechos reservados</div>
 </footer>
 
+<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="script.js"></script>
 </body>
