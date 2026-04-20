@@ -210,6 +210,18 @@ function renderCatalog() {
         </div>
       </div>`;
     card.addEventListener('click', () => openModal(p));
+
+    // Show edit button if admin is logged in
+    db.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        const editBtn = document.createElement('button');
+        editBtn.className = 'card-admin-edit';
+        editBtn.textContent = '✏️ Editar';
+        editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
+        card.querySelector('.card-footer').appendChild(editBtn);
+      }
+    });
+
     grid.appendChild(card);
   });
 }
@@ -699,9 +711,8 @@ function bindAll() {
   });
   el('btn-close-admin-panel')?.addEventListener('click', () => { el('admin-overlay').classList.add('hidden'); hideAlert('login-msg'); });
   el('admin-overlay').addEventListener('click', async e => {
-    if (e.target===el('admin-overlay')) {
-      const { data: { session } } = await db.auth.getSession();
-      if (!session) el('admin-overlay').classList.add('hidden');
+    if (e.target === el('admin-overlay')) {
+      el('admin-overlay').classList.add('hidden');
     }
   });
   el('btn-login').addEventListener('click', login);
