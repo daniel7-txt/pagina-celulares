@@ -111,14 +111,23 @@ async function removeProduct(id) {
 // ── SESSION — Supabase Auth ──
 async function checkSession() {
   const { data: { session } } = await db.auth.getSession();
-  if (session) showAdminPanel();
+  if (session) enableAdminMode();
+}
+
+function enableAdminMode() {
+  document.body.classList.add('admin-mode');
+  el('admin-bar').classList.remove('hidden');
+}
+
+function disableAdminMode() {
+  document.body.classList.remove('admin-mode');
+  el('admin-bar').classList.add('hidden');
 }
 
 async function login() {
   const email = v('login-user');
   const pass  = document.getElementById('login-pass').value;
   if (!email || !pass) { showAlert('login-msg','error','Completa todos los campos.'); return; }
-
   showAlert('login-msg','info','Iniciando sesión...');
   const { error } = await db.auth.signInWithPassword({ email, password: pass });
   if (error) {
@@ -126,12 +135,17 @@ async function login() {
     document.getElementById('login-pass').value = '';
   } else {
     showAlert('login-msg','success','Sesión iniciada ✓');
-    setTimeout(() => { el('login-panel').classList.add('hidden'); showAdminPanel(); }, 600);
+    setTimeout(() => {
+      el('login-panel').classList.add('hidden');
+      el('admin-overlay').classList.add('hidden');
+      enableAdminMode();
+    }, 600);
   }
 }
 
 async function logout() {
   await db.auth.signOut();
+  disableAdminMode();
   el('admin-overlay').classList.add('hidden');
   el('admin-panel').classList.add('hidden');
   el('login-panel').classList.remove('hidden');
@@ -651,14 +665,39 @@ function bindAll() {
 
   ['search-input','search-mobile'].forEach(id => { el(id)?.addEventListener('input', renderCatalog); });
 
-  el('btn-admin-toggle').addEventListener('click', async () => {
-    el('admin-overlay').classList.remove('hidden');
-    const { data: { session } } = await db.auth.getSession();
-    if (session) { el('login-panel').classList.add('hidden'); showAdminPanel(); }
-    else { el('login-panel').classList.remove('hidden'); el('admin-panel').classList.add('hidden'); }
+  // Secret login — 5 clicks on footer copyright
+  let secretClicks = 0, secretTimer;
+  el('secret-login-trigger').addEventListener('click', () => {
+    secretClicks++;
+    clearTimeout(secretTimer);
+    secretTimer = setTimeout(() => { secretClicks = 0; }, 3000);
+    if (secretClicks >= 5) {
+      secretClicks = 0;
+      db.auth.getSession().then(({ data: { session } }) => {
+        if (!session) {
+          el('admin-overlay').classList.remove('hidden');
+          el('login-panel').classList.remove('hidden');
+          el('admin-panel').classList.add('hidden');
+        }
+      });
+    }
   });
 
-  el('btn-close-admin-panel').addEventListener('click', () => { el('admin-overlay').classList.add('hidden'); hideAlert('login-msg'); });
+  // Admin bar buttons
+  el('btn-open-panel')?.addEventListener('click', () => {
+    el('admin-overlay').classList.remove('hidden');
+    el('login-panel').classList.add('hidden');
+    el('admin-panel').classList.remove('hidden');
+    // Switch to add form tab
+    renderAdminList();
+  });
+  el('btn-manage-panel')?.addEventListener('click', () => {
+    el('admin-overlay').classList.remove('hidden');
+    el('login-panel').classList.add('hidden');
+    el('admin-panel').classList.remove('hidden');
+    renderAdminList();
+  });
+  el('btn-close-admin-panel')?.addEventListener('click', () => { el('admin-overlay').classList.add('hidden'); hideAlert('login-msg'); });
   el('admin-overlay').addEventListener('click', async e => {
     if (e.target===el('admin-overlay')) {
       const { data: { session } } = await db.auth.getSession();

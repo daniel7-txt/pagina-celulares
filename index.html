@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>La Bendicion  — Tecnología Original</title>
+  <title>TechStore GT — Tecnología Original</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
 </head>
@@ -26,7 +26,7 @@
     <a href="#" class="logo">
       <div class="logo-mark">T</div>
       <div class="logo-text-wrap">
-        <span class="logo-name">LaBendicion</span>
+        <span class="logo-name">TechStore</span>
         <span class="logo-country">Guatemala</span>
       </div>
     </a>
@@ -43,7 +43,6 @@
         <span class="search-icon">🔍</span>
         <input type="text" id="search-input" placeholder="Buscar productos..."/>
       </div>
-      <button class="admin-btn" id="btn-admin-toggle">Admin</button>
       <button class="ham-btn" id="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
       </button>
@@ -133,7 +132,7 @@
   <div class="store-inner">
     <div class="store-left">
       <p class="section-label">📍 Visítanos</p>
-      <h2 class="store-h2">Estamos en<br/>Chimaltenango</h2>
+      <h2 class="store-h2">Estamos en<br/>Guatemala City</h2>
       <p class="store-p">Visita nuestra tienda y prueba los productos antes de comprar. Nuestro equipo te asesora sin compromiso.</p>
       <div class="store-grid">
         <div class="store-card"><div class="store-card-icon">📌</div><div><strong>Dirección</strong><p>C.C. Miraflores, Local 42<br/>Calzada Roosevelt, Zona 11<br/>Guatemala City</p></div></div>
@@ -141,13 +140,13 @@
         <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 2345-6789<br/>WhatsApp: +502 5555-0000<br/>techstoregt@gmail.com</p></div></div>
         <div class="store-card"><div class="store-card-icon">🔧</div><div><strong>Servicios</strong><p>Cambio de pantallas<br/>Cambio de baterías<br/>Desbloqueado de equipos</p></div></div>
       </div>
-      <a href="https://maps.app.goo.gl/913bqmHf7mYSk8Bn6" target="_blank" class="btn-primary" style="margin-top:36px;display:inline-flex;">Ver en Google Maps →</a>
+      <a href="https://maps.google.com/?q=Centro+Comercial+Miraflores+Guatemala" target="_blank" class="btn-primary" style="margin-top:36px;display:inline-flex;">Ver en Google Maps →</a>
     </div>
     <div class="store-right">
       <div class="map-box">
         <div class="map-pin-anim">📍</div>
-        <p class="map-name">San Pedro Yepocapa, Chimaltenango</p>
-        <p class="map-zone">Tercer Canton, San Pedro Yepocapa</p>
+        <p class="map-name">C.C. Miraflores</p>
+        <p class="map-zone">Zona 11, Guatemala City</p>
         <div class="map-hours">
           <div class="map-hour-row"><span>Lunes – Viernes</span><span>9:00am – 7:00pm</span></div>
           <div class="map-hour-row"><span>Sábado</span><span>9:00am – 6:00pm</span></div>
@@ -185,7 +184,17 @@
   <p class="zoom-hint">Mueve el cursor para hacer zoom · Click para cerrar</p>
 </div>
 
-<!-- ── ADMIN OVERLAY ── -->
+<!-- ── ADMIN FLOATING BAR (solo visible si está autenticado) ── -->
+<div id="admin-bar" class="admin-bar hidden">
+  <div class="admin-bar-inner">
+    <span class="admin-bar-label">⚙️ Modo Admin</span>
+    <button class="admin-bar-btn" id="btn-open-panel">＋ Agregar producto</button>
+    <button class="admin-bar-btn" id="btn-manage-panel">📋 Gestionar</button>
+    <button class="admin-bar-btn danger" id="btn-logout">Salir</button>
+  </div>
+</div>
+
+<!-- ── LOGIN SECRETO (clic 5 veces en footer) ── -->
 <div id="admin-overlay" class="admin-overlay hidden">
   <div id="login-panel" class="login-card">
     <button class="card-x" id="btn-close-admin-panel">✕</button>
@@ -393,7 +402,7 @@
       <p>📍 C.C. Miraflores, Zona 11</p>
     </div>
   </div>
-  <div class="footer-bottom">© 2025 TechStore GT · Todos los derechos reservados</div>
+  <div class="footer-bottom" id="secret-login-trigger" style="user-select:none;">© 2025 TechStore GT · Todos los derechos reservados</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
