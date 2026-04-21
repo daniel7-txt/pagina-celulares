@@ -108,7 +108,7 @@ async function removeProduct(id) {
   if (error) throw error;
 }
 
-// ── SESSION — Supabase Auth ──
+// ── SESSION ──
 async function checkSession() {
   const { data: { session } } = await db.auth.getSession();
   if (session) enableAdminMode();
@@ -122,6 +122,10 @@ function enableAdminMode() {
 function disableAdminMode() {
   document.body.classList.remove('admin-mode');
   el('admin-bar').classList.add('hidden');
+}
+
+function closeAdminOverlay() {
+  el('admin-overlay').classList.add('hidden');
 }
 
 async function login() {
@@ -211,14 +215,14 @@ function renderCatalog() {
       </div>`;
     card.addEventListener('click', () => openModal(p));
 
-    // Show edit button if admin is logged in
     db.auth.getSession().then(({ data: { session } }) => {
       if (session) {
         const editBtn = document.createElement('button');
         editBtn.className = 'card-admin-edit';
         editBtn.textContent = '✏️ Editar';
+        editBtn.style.cssText = 'margin-top:6px;width:100%;';
         editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
-        card.querySelector('.card-footer').appendChild(editBtn);
+        card.querySelector('.card-body').appendChild(editBtn);
       }
     });
 
@@ -280,7 +284,7 @@ function openModal(p) {
       <p class="modal-prod-brand">${p.brand}</p>
       <h2 class="modal-prod-name">${p.name}</h2>
       <div class="modal-prod-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:14px;">
         <span class="card-status-badge ${st.cls}" style="position:static;font-size:12px;padding:5px 12px;">${st.label}</span>
       </div>
       ${p.desc ? `<p class="modal-prod-desc">${p.desc}</p>` : ''}
@@ -570,7 +574,7 @@ function renderEditGallery() {
   slot.style.display=editImages.length>=6?'none':'flex';
 }
 
-// ── UPLOAD IMAGE TO SUPABASE STORAGE ──
+// ── UPLOAD IMAGE ──
 async function uploadImage(file) {
   const ext = file.name.split('.').pop();
   const path = `${uid()}.${ext}`;
@@ -612,7 +616,7 @@ function renderColorTags(id, arr) {
   });
 }
 
-// ── RESET ADD FORM ──
+// ── RESET FORM ──
 function resetAddForm() {
   addImages=[]; addColors=[];
   renderAddGallery(); renderColorTags('color-chips',addColors);
@@ -627,7 +631,7 @@ function resetAddForm() {
   el('img-file-input').value=''; el('prod-estado').value='disponible'; updateAddPreview('');
 }
 
-// ── SEED SAMPLES ──
+// ── SEED ──
 async function seedSamples() {
   const samples = [
     {id:uid(),category:'celulares',name:'iPhone 15 Pro Max',brand:'Apple',price:13999,colors:['Natural Titanium','Negro','Blanco','Azul'],estado:'disponible',storage:'512GB',ram:'8GB',cpu:'Apple A17 Pro',screen:'6.7" OLED 120Hz',battery:'4422 mAh',camara:'48MP + 5x',os:'iOS 17',desc:'El iPhone más avanzado con chip A17 Pro y carcasa de titanio.',images:['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=900&q=80']},
@@ -650,7 +654,7 @@ function sv(id,val) { const e=document.getElementById(id); if(e) e.value=val||''
 function showAlert(id,type,text) { const e=el(id); e.className=`alert ${type}`; e.textContent=text; e.classList.remove('hidden'); }
 function hideAlert(id) { el(id)?.classList.add('hidden'); }
 
-// ── BIND ALL EVENTS ──
+// ── BIND ALL ──
 function bindAll() {
   el('hamburger').addEventListener('click', () => {
     el('mobile-nav').classList.toggle('hidden');
@@ -677,7 +681,7 @@ function bindAll() {
 
   ['search-input','search-mobile'].forEach(id => { el(id)?.addEventListener('input', renderCatalog); });
 
-  // Secret login — 5 clicks on footer copyright
+  // Secret login — 5 clicks on footer
   let secretClicks = 0, secretTimer;
   el('secret-login-trigger').addEventListener('click', () => {
     secretClicks++;
@@ -695,30 +699,27 @@ function bindAll() {
     }
   });
 
-  // Admin bar buttons
-  el('btn-open-panel')?.addEventListener('click', () => {
-    el('admin-overlay').classList.remove('hidden');
-    el('login-panel').classList.add('hidden');
-    el('admin-panel').classList.remove('hidden');
-    // Switch to add form tab
-    renderAdminList();
+  // Admin bar
+  el('btn-open-panel')?.addEventListener('click', showAdminPanel);
+  el('btn-manage-panel')?.addEventListener('click', showAdminPanel);
+  el('btn-logout')?.addEventListener('click', logout);
+
+  // Close admin overlay — X button just closes the window (doesn't logout)
+  el('btn-close-admin-panel')?.addEventListener('click', closeAdminOverlay);
+  el('btn-close-admin-x')?.addEventListener('click', closeAdminOverlay);
+
+  // Logout from panel header
+  el('btn-logout-panel')?.addEventListener('click', logout);
+
+  // Click outside overlay to close
+  el('admin-overlay').addEventListener('click', e => {
+    if (e.target === el('admin-overlay')) closeAdminOverlay();
   });
-  el('btn-manage-panel')?.addEventListener('click', () => {
-    el('admin-overlay').classList.remove('hidden');
-    el('login-panel').classList.add('hidden');
-    el('admin-panel').classList.remove('hidden');
-    renderAdminList();
-  });
-  el('btn-close-admin-panel')?.addEventListener('click', () => { el('admin-overlay').classList.add('hidden'); hideAlert('login-msg'); });
-  el('admin-overlay').addEventListener('click', async e => {
-    if (e.target === el('admin-overlay')) {
-      el('admin-overlay').classList.add('hidden');
-    }
-  });
+
   el('btn-login').addEventListener('click', login);
   el('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
-  el('btn-logout').addEventListener('click', logout);
 
+  // Category pills
   document.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
@@ -741,6 +742,7 @@ function bindAll() {
   el('btn-save-edit').addEventListener('click', saveEdit);
   el('modal-edit').addEventListener('click', e => { if(e.target===el('modal-edit')) closeEditModal(); });
 
+  // Add image
   el('add-img-slot').addEventListener('click', () => { el('img-add-controls').classList.remove('hidden'); });
   el('img-url-input').addEventListener('input', e => { addPendingSrc=e.target.value.trim(); updateAddPreview(addPendingSrc); });
   el('img-file-input').addEventListener('change', async e => {
@@ -777,6 +779,7 @@ function bindAll() {
   el('btn-add-color').addEventListener('click', () => { const inp=el('color-input-text'); pushColor(inp.value,addColors,'color-chips'); inp.value=''; });
   el('color-input-text').addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();const inp=el('color-input-text');pushColor(inp.value,addColors,'color-chips');inp.value='';} });
 
+  // Edit image
   el('edit-add-img-slot').addEventListener('click', () => { el('edit-img-add-controls').classList.remove('hidden'); });
   el('edit-img-url-input').addEventListener('input', e => { editPendingSrc=e.target.value.trim(); updateEditPreview(editPendingSrc); });
   el('edit-img-file-input').addEventListener('change', async e => {
@@ -817,7 +820,7 @@ function bindAll() {
   el('zoom-bg').addEventListener('click', closeZoom);
 
   document.addEventListener('keydown', e => {
-    if(e.key==='Escape') { closeModal(); closeEditModal(); closeZoom(); }
+    if(e.key==='Escape') { closeModal(); closeEditModal(); closeZoom(); closeAdminOverlay(); }
     if(!el('modal-product').classList.contains('hidden')) {
       if(e.key==='ArrowLeft') changeGal(-1);
       if(e.key==='ArrowRight') changeGal(1);
