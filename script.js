@@ -303,7 +303,7 @@ function openModal(p) {
           </div>
         </div>` : ''}
       <div class="modal-store-note">
-        📍 Disponible en tienda física · C.C. Miraflores, Zona 11, Guatemala City
+        📍 Disponible en tienda física · Tercer Cantón, San Pedro Yepocapa
       </div>
       <div class="specs-section-modal">
         <div class="specs-section-label">Especificaciones</div>
