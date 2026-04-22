@@ -7,11 +7,9 @@
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
 </head>
-
 <body>
 
-
-<!-- ── HEADER ── -->
+<!-- HEADER -->
 <header id="site-header">
   <div class="header-inner">
     <a href="#" class="logo">
@@ -33,6 +31,7 @@
       <div class="search-box">
         <span class="search-icon">🔍</span>
         <input type="text" id="search-input" placeholder="Buscar productos..."/>
+        <button class="search-clear-btn" id="search-clear-btn" title="Limpiar">✕</button>
       </div>
       <button class="ham-btn" id="hamburger" aria-label="Menú">
         <span></span><span></span><span></span>
@@ -53,7 +52,7 @@
   </div>
 </header>
 
-<!-- ── HERO ── -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid-bg"></div>
@@ -99,7 +98,7 @@
   </div>
 </section>
 
-<!-- ── CATÁLOGO — todas las secciones apiladas ── -->
+<!-- CATÁLOGO -->
 <div id="catalogo" class="all-catalogs">
 
   <!-- Celulares -->
@@ -218,7 +217,7 @@
 
 </div>
 
-<!-- ── STORE INFO ── -->
+<!-- STORE INFO -->
 <section id="tienda" class="store-section">
   <div class="store-inner">
     <div class="store-left">
@@ -228,7 +227,7 @@
       <div class="store-grid">
         <div class="store-card"><div class="store-card-icon">📌</div><div><strong>Dirección</strong><p>San Pedro Yepocapa, Chimaltenango<br/>Tercer Cantón<br/>Chimaltenango</p></div></div>
         <div class="store-card"><div class="store-card-icon">🕐</div><div><strong>Horario</strong><p>Lun – Vie: 8:00am – 8:00pm<br/>Sáb: 8:00am – 8:00pm<br/>Dom: 8:00am – 8:00pm</p></div></div>
-        <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 5483-4689<br/>WhatsApp: +502 5483-4689<br/></div></div>
+        <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 5483-4689<br/>WhatsApp: +502 5483-4689</p></div></div>
         <div class="store-card"><div class="store-card-icon">🔧</div><div><strong>Servicios</strong><p>Cambio de pantallas<br/>Liberaciones SIM<br/>Desbloqueado de equipos (FRP)</p></div></div>
       </div>
       <a href="https://maps.app.goo.gl/ygKxRL9UdeYd9qm97" target="_blank" class="btn-primary" style="margin-top:28px;display:inline-flex;">Ver en Google Maps →</a>
@@ -248,20 +247,20 @@
   </div>
 </section>
 
-<!-- ── WHATSAPP FLOTANTE ── -->
+<!-- WHATSAPP FLOTANTE -->
 <a href="https://wa.me/50254834689?text=Hola%20quiero%20información%20sobre%20un%20producto" class="float-wa" target="_blank">
   <i class="fa fa-whatsapp"></i>
 </a>
 
-<!-- ── PRODUCT DETAIL MODAL ── -->
+<!-- PRODUCT DETAIL MODAL -->
 <div id="modal-product" class="modal-overlay hidden">
   <div class="modal-shell">
-    <button class="modal-x" id="btn-close-modal">✕</button>
+    <button class="modal-x" id="btn-close-modal" title="Cerrar">✕</button>
     <div id="modal-content" class="modal-content-wrap"></div>
   </div>
 </div>
 
-<!-- ── ZOOM OVERLAY ── -->
+<!-- ZOOM OVERLAY -->
 <div id="zoom-overlay" class="zoom-overlay hidden">
   <div class="zoom-bg" id="zoom-bg"></div>
   <div class="zoom-container" id="zoom-container">
@@ -275,7 +274,7 @@
   <p class="zoom-hint">Mueve el cursor para hacer zoom · Click para cerrar</p>
 </div>
 
-<!-- ── ADMIN FLOATING BAR ── -->
+<!-- ADMIN FLOATING BAR -->
 <div id="admin-bar" class="admin-bar hidden">
   <div class="admin-bar-inner">
     <span class="admin-bar-label">⚙️ Modo Admin</span>
@@ -285,7 +284,7 @@
   </div>
 </div>
 
-<!-- ── LOGIN SECRETO ── -->
+<!-- LOGIN SECRETO -->
 <div id="admin-overlay" class="admin-overlay hidden">
   <div id="login-panel" class="login-card">
     <button class="card-x" id="btn-close-admin-panel">✕</button>
@@ -422,7 +421,7 @@
   </div>
 </div>
 
-<!-- ── EDIT MODAL ── -->
+<!-- EDIT MODAL -->
 <div id="modal-edit" class="modal-overlay hidden" style="z-index:500;">
   <div class="modal-shell" style="max-width:780px;">
     <button class="modal-x" id="btn-close-edit">✕</button>
@@ -469,7 +468,7 @@
   </div>
 </div>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">

@@ -1,5 +1,5 @@
 /* =====================================================
-   TechStore GT — script.js
+   TechStore GT — script.js  v2
    Supabase integration | Secure Admin Auth
 ===================================================== */
 
@@ -19,11 +19,14 @@ const CATS = {
   cargadores:  { label:'Cargadores',  icon:'⚡', sub:'Carga rápida y segura para tus dispositivos' },
   accesorios:  { label:'Accesorios',  icon:'🎒', sub:'Fundas, cables, vidrios y más' }
 };
+// Canonical order (used to resolve ties)
+const CAT_ORDER = ['celulares','auriculares','relojes','bocinas','cargadores','accesorios'];
+
 const STATUS = {
-  disponible: { label:'Disponible',           cls:'s-disponible' },
-  pocas:      { label:'Pocas unidades',        cls:'s-pocas' },
-  agotado:    { label:'Agotado',              cls:'s-agotado' },
-  preventa:   { label:'Próximamente', cls:'s-preventa' }
+  disponible: { label:'Disponible',    cls:'s-disponible' },
+  pocas:      { label:'Pocas unidades', cls:'s-pocas' },
+  agotado:    { label:'Agotado',        cls:'s-agotado' },
+  preventa:   { label:'Próximamente',   cls:'s-preventa' }
 };
 const COLOR_MAP = {
   negro:'#1a1a1a',blanco:'#f5f5f5',rojo:'#ef4444',azul:'#3b82f6',verde:'#22c55e',
@@ -53,6 +56,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderAllCatalogs();
   await checkSession();
   bindAll();
+  initSearchExpand();
+  initBackGesture();
+  reorderSections();
 });
 
 // ── DATA — Supabase ──
@@ -163,73 +169,182 @@ function showAdminPanel() {
   renderAdminList();
 }
 
+// ── REORDER SECTIONS by product count ──
+function reorderSections() {
+  const catalogo = el('catalogo');
+  if (!catalogo) return;
+
+  // Sort cats: those with products first (by canonical order), empties last
+  const sorted = [...CAT_ORDER].sort((a, b) => {
+    const aCount = products.filter(p => p.category === a).length;
+    const bCount = products.filter(p => p.category === b).length;
+    const aHas = aCount > 0 ? 0 : 1;
+    const bHas = bCount > 0 ? 0 : 1;
+    if (aHas !== bHas) return aHas - bHas;
+    // Both have or both don't — keep canonical order
+    return CAT_ORDER.indexOf(a) - CAT_ORDER.indexOf(b);
+  });
+
+  // Also fix alt/non-alt background alternation after reorder
+  sorted.forEach((cat, i) => {
+    const sec = el(`sec-${cat}`);
+    if (!sec) return;
+    catalogo.appendChild(sec);
+    sec.classList.toggle('catalog-section-alt', i % 2 === 1);
+    // Fix count background for alt sections
+    const countEl = el(`count-${cat}`);
+    if (countEl) {
+      countEl.style.background = i % 2 === 1 ? 'var(--bg)' : 'var(--bg-white)';
+    }
+  });
+}
+
 // ── CATALOG RENDER — all sections stacked ──
 function renderAllCatalogs() {
   const query = (el('search-input')?.value || el('search-mobile')?.value || '').toLowerCase().trim();
 
-  db.auth.getSession().then(({ data: { session } }) => {
-    Object.keys(CATS).forEach(cat => {
-      const cat_info = CATS[cat];
-      const grid = el(`grid-${cat}`);
-      const emptyDiv = el(`empty-${cat}`);
-      const countEl = el(`count-${cat}`);
+  // Show/hide search results section
+  const searchResultsEl = el('search-results-section');
 
-      let list = products.filter(p => p.category === cat);
-      if (query) list = list.filter(p =>
-        p.name.toLowerCase().includes(query) ||
-        p.brand.toLowerCase().includes(query) ||
-        (p.desc||'').toLowerCase().includes(query)
-      );
+  if (query) {
+    // Search mode: show single results section, hide all cat sections
+    document.querySelectorAll('.catalog-section').forEach(s => s.style.display = 'none');
 
-      if (countEl) countEl.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
+    let allMatches = products.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      p.brand.toLowerCase().includes(query) ||
+      (p.desc||'').toLowerCase().includes(query)
+    );
+
+    if (!searchResultsEl) {
+      // Create search results section
+      const sec = document.createElement('section');
+      sec.id = 'search-results-section';
+      sec.className = 'catalog-section search-results-section';
+      sec.innerHTML = `
+        <div class="catalog-inner">
+          <div class="catalog-header">
+            <div>
+              <h2 class="catalog-title">🔍 Resultados para "${escapeHtml(query)}"</h2>
+              <p class="catalog-sub" id="search-result-count"></p>
+            </div>
+          </div>
+          <div id="search-results-grid" class="product-grid"></div>
+          <div id="search-empty" class="search-empty-wrap hidden">
+            <div class="search-empty-icon">🔍</div>
+            <h3 class="search-empty-title">No encontramos "${escapeHtml(query)}"</h3>
+            <p class="search-empty-sub">Intenta con otro nombre, marca o categoría</p>
+          </div>
+        </div>`;
+      el('catalogo').prepend(sec);
+    } else {
+      // Update title
+      searchResultsEl.style.display = '';
+      searchResultsEl.querySelector('.catalog-title').textContent = `🔍 Resultados para "${escapeHtml(query)}"`;
+      // Re-escape inner text for empty state
+      const emptyTitle = searchResultsEl.querySelector('.search-empty-title');
+      if (emptyTitle) emptyTitle.textContent = `No encontramos "${query}"`;
+    }
+
+    db.auth.getSession().then(({ data: { session } }) => {
+      const grid = el('search-results-grid');
+      const emptyEl = el('search-empty');
+      const countEl = el('search-result-count');
       if (!grid) return;
       grid.innerHTML = '';
 
-      if (!list.length) {
-        if (emptyDiv) emptyDiv.classList.remove('hidden');
+      if (countEl) countEl.textContent = allMatches.length
+        ? `${allMatches.length} producto${allMatches.length !== 1 ? 's' : ''} encontrado${allMatches.length !== 1 ? 's' : ''}`
+        : '';
+
+      if (!allMatches.length) {
+        if (emptyEl) emptyEl.classList.remove('hidden');
         return;
       }
-      if (emptyDiv) emptyDiv.classList.add('hidden');
+      if (emptyEl) emptyEl.classList.add('hidden');
 
-      list.forEach(p => {
-        const card = document.createElement('div');
-        card.className = `product-card pc-${p.category}`;
-        const img0 = p.images?.[0] || '';
-        const st = STATUS[p.estado] || STATUS.disponible;
-        card.innerHTML = `
-          <div class="card-img-wrap">
-            ${img0
-              ? `<img src="${img0}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-no-img\\'>${cat_info.icon}</div>'">`
-              : `<div class="card-no-img">${cat_info.icon}</div>`}
-            <div class="card-brand-badge">${p.brand}</div>
-            <div class="card-status-badge ${st.cls}">${st.label}</div>
-            ${(p.images?.length||0)>1 ? `<div class="card-img-count">🖼 ${p.images.length}</div>` : ''}
-          </div>
-          <div class="card-body">
-            <div class="card-cat-label">${cat_info.icon} ${cat_info.label}</div>
-            <div class="card-name">${p.name}</div>
-            <div class="card-chips">${buildChips(p)}</div>
-            ${buildColorDots(p.colors||[])}
-            <div class="card-footer">
-              <div class="card-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
-              <button class="card-cta">Ver detalle</button>
-            </div>
-          </div>`;
-        card.addEventListener('click', () => openModal(p));
-
-        if (session) {
-          const editBtn = document.createElement('button');
-          editBtn.className = 'card-admin-edit';
-          editBtn.textContent = '✏️ Editar';
-          editBtn.style.cssText = 'margin-top:6px;width:100%;';
-          editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
-          card.querySelector('.card-body').appendChild(editBtn);
-        }
-
+      allMatches.forEach(p => {
+        const card = buildProductCard(p, session);
         grid.appendChild(card);
       });
     });
-  });
+
+  } else {
+    // Normal mode: remove search section if exists, show all cat sections
+    const existing = el('search-results-section');
+    if (existing) existing.remove();
+    document.querySelectorAll('.catalog-section').forEach(s => s.style.display = '');
+
+    db.auth.getSession().then(({ data: { session } }) => {
+      Object.keys(CATS).forEach(cat => {
+        const cat_info = CATS[cat];
+        const grid = el(`grid-${cat}`);
+        const emptyDiv = el(`empty-${cat}`);
+        const countEl = el(`count-${cat}`);
+
+        let list = products.filter(p => p.category === cat);
+        if (countEl) countEl.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        if (!list.length) {
+          if (emptyDiv) emptyDiv.classList.remove('hidden');
+          return;
+        }
+        if (emptyDiv) emptyDiv.classList.add('hidden');
+
+        list.forEach(p => {
+          const card = buildProductCard(p, session);
+          grid.appendChild(card);
+        });
+      });
+
+      // Reorder sections after render
+      reorderSections();
+    });
+  }
+}
+
+function buildProductCard(p, session) {
+  const cat_info = CATS[p.category];
+  const card = document.createElement('div');
+  card.className = `product-card pc-${p.category}`;
+  const img0 = p.images?.[0] || '';
+  const st = STATUS[p.estado] || STATUS.disponible;
+  card.innerHTML = `
+    <div class="card-img-wrap">
+      ${img0
+        ? `<img src="${img0}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-no-img\\'>${cat_info.icon}</div>'">`
+        : `<div class="card-no-img">${cat_info.icon}</div>`}
+      <div class="card-brand-badge">${p.brand}</div>
+      <div class="card-status-badge ${st.cls}">${st.label}</div>
+      ${(p.images?.length||0)>1 ? `<div class="card-img-count">🖼 ${p.images.length}</div>` : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-cat-label">${cat_info.icon} ${cat_info.label}</div>
+      <div class="card-name">${p.name}</div>
+      <div class="card-chips">${buildChips(p)}</div>
+      ${buildColorDots(p.colors||[])}
+      <div class="card-footer">
+        <div class="card-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
+        <button class="card-cta">Ver detalle</button>
+      </div>
+    </div>`;
+  card.addEventListener('click', () => openModal(p));
+
+  if (session) {
+    const editBtn = document.createElement('button');
+    editBtn.className = 'card-admin-edit';
+    editBtn.textContent = '✏️ Editar';
+    editBtn.style.cssText = 'margin-top:6px;width:100%;';
+    editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
+    card.querySelector('.card-body').appendChild(editBtn);
+  }
+  return card;
+}
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
 // Keep renderCatalog as alias for compatibility
@@ -258,6 +373,62 @@ function colorCss(name) {
   return COLOR_MAP[k] || COLOR_MAP[name.toLowerCase()] || '#a0a0a0';
 }
 
+// ── SEARCH EXPAND ──
+function initSearchExpand() {
+  const headerInner = document.querySelector('.header-inner');
+  const searchInput = el('search-input');
+  const clearBtn = document.querySelector('.search-clear-btn');
+
+  if (!searchInput || !headerInner) return;
+
+  searchInput.addEventListener('focus', () => {
+    headerInner.classList.add('search-expanded');
+  });
+
+  searchInput.addEventListener('blur', () => {
+    if (!searchInput.value) {
+      setTimeout(() => headerInner.classList.remove('search-expanded'), 200);
+    }
+  });
+
+  if (clearBtn) {
+    searchInput.addEventListener('input', () => {
+      clearBtn.classList.toggle('visible', searchInput.value.length > 0);
+    });
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.classList.remove('visible');
+      headerInner.classList.remove('search-expanded');
+      renderAllCatalogs();
+      searchInput.blur();
+    });
+  }
+}
+
+// ── BACK GESTURE / POPSTATE to close modal ──
+function initBackGesture() {
+  window.addEventListener('popstate', () => {
+    // Close whichever modal is open
+    if (!el('modal-product').classList.contains('hidden')) {
+      closeModal(false); // false = don't pushState again
+    } else if (!el('zoom-overlay').classList.contains('hidden')) {
+      closeZoom(false);
+    } else if (!el('modal-edit').classList.contains('hidden')) {
+      closeEditModal(false);
+    }
+  });
+
+  // Touch swipe down to close modal on mobile
+  let touchStartY = 0;
+  el('modal-product').addEventListener('touchstart', e => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  el('modal-product').addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (dy > 80) closeModal(); // swipe down 80px
+  }, { passive: true });
+}
+
 // ── PRODUCT MODAL ──
 function openModal(p) {
   galleryImgs = p.images?.length ? p.images : [];
@@ -265,7 +436,10 @@ function openModal(p) {
   const cat = CATS[p.category];
   const st  = STATUS[p.estado] || STATUS.disponible;
 
-  // WhatsApp button — disabled unless estado is 'disponible' or 'pocas'
+  // Push state so back button works
+  history.pushState({ modal: 'product' }, '');
+
+  // WhatsApp button
   const waEnabled = (p.estado === 'disponible' || p.estado === 'pocas');
   const waMsg = encodeURIComponent(`Hola, me interesa el ${p.name} (Q${p.price}), ¿está disponible?`);
   const waBtn = waEnabled
@@ -276,10 +450,24 @@ function openModal(p) {
         <i class="fa fa-whatsapp" style="font-size:20px;"></i> No disponible por WhatsApp aún
        </button>`;
 
+  // Agotado notice
+  const agotadoNotice = p.estado === 'agotado'
+    ? `<div class="agotado-notice">
+        <div class="agotado-notice-icon">🚫</div>
+        <div class="agotado-notice-text">
+          <strong>Producto agotado</strong>
+          <p>Este producto no está disponible actualmente. Escríbenos al WhatsApp para saber cuándo llega o para reservar.</p>
+        </div>
+       </div>`
+    : '';
+
   // Preventa notice
   const preventaNotice = p.estado === 'preventa'
     ? `<div class="preventa-notice">🔔 Próximamente disponible en local · Tercer Cantón, San Pedro Yepocapa</div>`
     : '';
+
+  // Status badge for modal — bigger
+  const statusBadge = `<div class="modal-status-badge ${st.cls}"><span class="status-dot"></span>${st.label}</div>`;
 
   const content = el('modal-content');
   content.innerHTML = `
@@ -305,10 +493,9 @@ function openModal(p) {
       <p class="modal-prod-brand">${p.brand}</p>
       <h2 class="modal-prod-name">${p.name}</h2>
       <div class="modal-prod-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
-      <div style="margin-bottom:14px;">
-        <span class="card-status-badge ${st.cls}" style="position:static;font-size:12px;padding:5px 12px;">${st.label}</span>
-      </div>
+      ${statusBadge}
       ${p.desc ? `<p class="modal-prod-desc">${p.desc}</p>` : ''}
+      ${agotadoNotice}
       ${waBtn}
       ${preventaNotice}
       ${(p.colors?.length) ? `
@@ -365,7 +552,14 @@ function goGal(idx) {
   document.querySelectorAll('.modal-thumb').forEach((t,i) => t.classList.toggle('active', i === idx));
 }
 
-function closeModal() { el('modal-product').classList.add('hidden'); document.body.style.overflow = ''; }
+function closeModal(pushState = true) {
+  el('modal-product').classList.add('hidden');
+  document.body.style.overflow = '';
+  // If closed via X or backdrop (not back button), pop the state
+  if (pushState && history.state?.modal === 'product') {
+    history.back();
+  }
+}
 
 function buildModalSpecs(p) {
   const sc = (label,val) => val ? `<div class="spec-cell"><div class="spec-cell-label">${label}</div><div class="spec-cell-val">${val}</div></div>` : '';
@@ -380,6 +574,7 @@ function buildModalSpecs(p) {
 
 // ── ZOOM ──
 function openZoom(src) {
+  history.pushState({ modal: 'zoom' }, '');
   const zOverlay = el('zoom-overlay'), zImg = el('zoom-img');
   const zResult = el('zoom-result'), zLens = el('zoom-lens'), zContainer = el('zoom-container');
   zImg.src = src;
@@ -409,12 +604,13 @@ function openZoom(src) {
   zContainer._cleanup = () => { zContainer.removeEventListener('mousemove', onMove); zContainer.removeEventListener('touchmove', onTouch); };
 }
 
-function closeZoom() {
+function closeZoom(pushState = true) {
   el('zoom-overlay').classList.add('hidden');
   el('zoom-lens').style.display = 'none';
   el('zoom-result').style.display = 'none';
   const zc = el('zoom-container');
   if (zc._cleanup) { zc._cleanup(); zc._cleanup = null; }
+  if (pushState && history.state?.modal === 'zoom') history.back();
 }
 
 // ── ADD PRODUCT ──
@@ -531,11 +727,16 @@ function openEditModal(id) {
   else if(p.category==='cargadores')  { sv('edit-tipo-carga',p.tipoCarga);sv('edit-watts',p.watts);sv('edit-compat-carg',p.compatCarg);sv('edit-puertos',p.puertos); }
   else if(p.category==='accesorios')  { sv('edit-tipo-acc',p.tipoAcc);sv('edit-compat-acc',p.compatAcc);sv('edit-material',p.material); }
   hideAlert('edit-msg');
+  history.pushState({ modal: 'edit' }, '');
   el('modal-edit').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
 
-function closeEditModal() { el('modal-edit').classList.add('hidden'); document.body.style.overflow = ''; }
+function closeEditModal(pushState = true) {
+  el('modal-edit').classList.add('hidden');
+  document.body.style.overflow = '';
+  if (pushState && history.state?.modal === 'edit') history.back();
+}
 
 async function saveEdit() {
   const id = el('edit-id').value;
@@ -681,7 +882,6 @@ function bindAll() {
     el('hamburger').classList.toggle('open');
   });
 
-  // Close mobile nav when a link is clicked
   document.querySelectorAll('.mobile-nav .cat-btn').forEach(a => {
     a.addEventListener('click', () => {
       el('mobile-nav').classList.add('hidden');
@@ -695,7 +895,7 @@ function bindAll() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const id = entry.target.id; // e.g. sec-celulares
+        const id = entry.target.id;
         navLinks.forEach(link => {
           link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
         });
@@ -757,9 +957,12 @@ function bindAll() {
   });
 
   el('btn-add-product').addEventListener('click', addProduct);
-  el('btn-close-modal').addEventListener('click', closeModal);
+
+  // Modal close — X button and backdrop
+  el('btn-close-modal').addEventListener('click', () => closeModal());
   el('modal-product').addEventListener('click', e => { if(e.target===el('modal-product')) closeModal(); });
-  el('btn-close-edit').addEventListener('click', closeEditModal);
+
+  el('btn-close-edit').addEventListener('click', () => closeEditModal());
   el('btn-save-edit').addEventListener('click', saveEdit);
   el('modal-edit').addEventListener('click', e => { if(e.target===el('modal-edit')) closeEditModal(); });
 
@@ -837,11 +1040,16 @@ function bindAll() {
   el('edit-btn-add-color').addEventListener('click', () => { const inp=el('edit-color-input-text');pushColor(inp.value,editColors,'edit-color-chips');inp.value=''; });
   el('edit-color-input-text').addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();const inp=el('edit-color-input-text');pushColor(inp.value,editColors,'edit-color-chips');inp.value='';} });
 
-  el('btn-close-zoom').addEventListener('click', closeZoom);
-  el('zoom-bg').addEventListener('click', closeZoom);
+  el('btn-close-zoom').addEventListener('click', () => closeZoom());
+  el('zoom-bg').addEventListener('click', () => closeZoom());
 
   document.addEventListener('keydown', e => {
-    if(e.key==='Escape') { closeModal(); closeEditModal(); closeZoom(); closeAdminOverlay(); }
+    if(e.key==='Escape') {
+      if (!el('zoom-overlay').classList.contains('hidden')) { closeZoom(); return; }
+      if (!el('modal-product').classList.contains('hidden')) { closeModal(); return; }
+      if (!el('modal-edit').classList.contains('hidden')) { closeEditModal(); return; }
+      if (!el('admin-overlay').classList.contains('hidden')) { closeAdminOverlay(); return; }
+    }
     if(!el('modal-product').classList.contains('hidden')) {
       if(e.key==='ArrowLeft') changeGal(-1);
       if(e.key==='ArrowRight') changeGal(1);
