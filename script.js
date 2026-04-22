@@ -23,7 +23,7 @@ const STATUS = {
   disponible: { label:'Disponible',           cls:'s-disponible' },
   pocas:      { label:'Pocas unidades',        cls:'s-pocas' },
   agotado:    { label:'Agotado',              cls:'s-agotado' },
-  preventa:   { label:'Próximamente en local', cls:'s-preventa' }
+  preventa:   { label:'Próximamente', cls:'s-preventa' }
 };
 const COLOR_MAP = {
   negro:'#1a1a1a',blanco:'#f5f5f5',rojo:'#ef4444',azul:'#3b82f6',verde:'#22c55e',
