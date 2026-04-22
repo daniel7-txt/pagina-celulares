@@ -1,6 +1,7 @@
 /* =====================================================
-   TechStore GT — script.js  v2
-   Supabase integration | Secure Admin Auth
+   TechStore GT — script.js  v3
+   Fixes: search panel, gallery arrows, modal close,
+          zoom mobile doubletap, status badge, image fit
 ===================================================== */
 
 // ── SUPABASE CONFIG ──
@@ -19,7 +20,6 @@ const CATS = {
   cargadores:  { label:'Cargadores',  icon:'⚡', sub:'Carga rápida y segura para tus dispositivos' },
   accesorios:  { label:'Accesorios',  icon:'🎒', sub:'Fundas, cables, vidrios y más' }
 };
-// Canonical order (used to resolve ties)
 const CAT_ORDER = ['celulares','auriculares','relojes','bocinas','cargadores','accesorios'];
 
 const STATUS = {
@@ -49,17 +49,172 @@ let addImages = [], addColors = [];
 let editImages = [], editColors = [];
 let addPendingSrc = '', editPendingSrc = '';
 let galleryImgs = [], galleryIdx = 0;
+let searchPanelActive = false;
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
+  injectSearchPanelDOM();
   await loadProducts();
   renderAllCatalogs();
   await checkSession();
   bindAll();
-  initSearchExpand();
+  initSearchPanel();
   initBackGesture();
   reorderSections();
 });
+
+// ═══════════════════════════════════════════
+// FIX 1: SEARCH PANEL — aparece al frente con blur
+// ═══════════════════════════════════════════
+function injectSearchPanelDOM() {
+  // Overlay de fondo borroso
+  const overlay = document.createElement('div');
+  overlay.id = 'search-fullscreen-overlay';
+  document.body.appendChild(overlay);
+
+  // Panel deslizable desde arriba
+  const panel = document.createElement('div');
+  panel.id = 'search-results-panel';
+  panel.innerHTML = `
+    <div id="search-results-inner">
+      <div id="search-results-header">
+        <div>
+          <div id="search-results-title">🔍 Buscando...</div>
+          <div id="search-result-count-panel"></div>
+        </div>
+      </div>
+      <div id="search-results-grid-panel" class="product-grid"></div>
+      <div id="search-empty-panel" class="search-empty-panel hidden">
+        <div class="search-empty-icon">🔍</div>
+        <div class="search-empty-title"></div>
+        <div class="search-empty-sub">Intenta con otro nombre, marca o categoría</div>
+      </div>
+    </div>`;
+  document.body.appendChild(panel);
+}
+
+function initSearchPanel() {
+  const searchInput  = el('search-input');
+  const headerInner  = document.querySelector('.header-inner');
+  const clearBtn     = document.querySelector('.search-clear-btn');
+  const overlay      = el('search-fullscreen-overlay');
+  const panel        = el('search-results-panel');
+
+  if (!searchInput) return;
+
+  // Abrir panel al escribir
+  searchInput.addEventListener('focus', () => {
+    headerInner.classList.add('search-expanded');
+    if (searchInput.value.trim()) openSearchPanel();
+  });
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim();
+    clearBtn && clearBtn.classList.toggle('visible', q.length > 0);
+    if (q) {
+      openSearchPanel();
+      renderSearchPanel(q);
+    } else {
+      closeSearchPanel();
+    }
+  });
+
+  // Click en el fondo borroso cierra el panel (sin ir al inicio)
+  overlay.addEventListener('click', () => {
+    closeSearchPanel();
+    searchInput.blur();
+  });
+
+  // Botón X limpiar
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.classList.remove('visible');
+      closeSearchPanel();
+      headerInner.classList.remove('search-expanded');
+      searchInput.blur();
+    });
+  }
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && searchPanelActive) {
+      closeSearchPanel();
+      searchInput.blur();
+    }
+  });
+
+  // Mobile search
+  const mobileSearch = el('search-mobile');
+  if (mobileSearch) {
+    mobileSearch.addEventListener('input', () => {
+      const q = mobileSearch.value.trim();
+      if (q) { openSearchPanel(); renderSearchPanel(q); }
+      else closeSearchPanel();
+    });
+  }
+}
+
+function openSearchPanel() {
+  searchPanelActive = true;
+  el('search-fullscreen-overlay').classList.add('active');
+  el('search-results-panel').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSearchPanel() {
+  searchPanelActive = false;
+  el('search-fullscreen-overlay').classList.remove('active');
+  el('search-results-panel').classList.remove('active');
+  document.body.style.overflow = '';
+  const headerInner = document.querySelector('.header-inner');
+  if (el('search-input')?.value === '') {
+    headerInner?.classList.remove('search-expanded');
+  }
+}
+
+function renderSearchPanel(query) {
+  const q = query.toLowerCase().trim();
+  const title = el('search-results-title');
+  const count = el('search-result-count-panel');
+  const grid  = el('search-results-grid-panel');
+  const empty = el('search-empty-panel');
+
+  if (!grid) return;
+
+  const matches = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.brand.toLowerCase().includes(q) ||
+    (p.desc||'').toLowerCase().includes(q)
+  );
+
+  if (title) title.textContent = `🔍 Resultados para "${query}"`;
+  if (count) count.textContent = matches.length
+    ? `${matches.length} producto${matches.length !== 1 ? 's' : ''} encontrado${matches.length !== 1 ? 's' : ''}`
+    : '';
+
+  grid.innerHTML = '';
+
+  if (!matches.length) {
+    empty.classList.remove('hidden');
+    const t = empty.querySelector('.search-empty-title');
+    if (t) t.textContent = `No encontramos "${query}"`;
+    return;
+  }
+  empty.classList.add('hidden');
+
+  db.auth.getSession().then(({ data: { session } }) => {
+    matches.forEach(p => {
+      const card = buildProductCard(p, session);
+      // Al hacer click en resultado: cerrar panel y abrir modal del producto
+      card.addEventListener('click', () => {
+        closeSearchPanel();
+        openModal(p);
+      }, true); // capture para que el listener del card no interfiera
+      grid.appendChild(card);
+    });
+  });
+}
 
 // ── DATA — Supabase ──
 async function loadProducts() {
@@ -169,140 +324,51 @@ function showAdminPanel() {
   renderAdminList();
 }
 
-// ── REORDER SECTIONS by product count ──
+// ── REORDER SECTIONS ──
 function reorderSections() {
   const catalogo = el('catalogo');
   if (!catalogo) return;
-
-  // Sort cats: those with products first (by canonical order), empties last
   const sorted = [...CAT_ORDER].sort((a, b) => {
     const aCount = products.filter(p => p.category === a).length;
     const bCount = products.filter(p => p.category === b).length;
     const aHas = aCount > 0 ? 0 : 1;
     const bHas = bCount > 0 ? 0 : 1;
     if (aHas !== bHas) return aHas - bHas;
-    // Both have or both don't — keep canonical order
     return CAT_ORDER.indexOf(a) - CAT_ORDER.indexOf(b);
   });
-
-  // Also fix alt/non-alt background alternation after reorder
   sorted.forEach((cat, i) => {
     const sec = el(`sec-${cat}`);
     if (!sec) return;
     catalogo.appendChild(sec);
     sec.classList.toggle('catalog-section-alt', i % 2 === 1);
-    // Fix count background for alt sections
     const countEl = el(`count-${cat}`);
-    if (countEl) {
-      countEl.style.background = i % 2 === 1 ? 'var(--bg)' : 'var(--bg-white)';
-    }
+    if (countEl) countEl.style.background = i % 2 === 1 ? 'var(--bg)' : 'var(--bg-white)';
   });
 }
 
-// ── CATALOG RENDER — all sections stacked ──
+// ── CATALOG RENDER ──
 function renderAllCatalogs() {
-  const query = (el('search-input')?.value || el('search-mobile')?.value || '').toLowerCase().trim();
-
-  // Show/hide search results section
-  const searchResultsEl = el('search-results-section');
-
-  if (query) {
-    // Search mode: show single results section, hide all cat sections
-    document.querySelectorAll('.catalog-section').forEach(s => s.style.display = 'none');
-
-    let allMatches = products.filter(p =>
-      p.name.toLowerCase().includes(query) ||
-      p.brand.toLowerCase().includes(query) ||
-      (p.desc||'').toLowerCase().includes(query)
-    );
-
-    if (!searchResultsEl) {
-      // Create search results section
-      const sec = document.createElement('section');
-      sec.id = 'search-results-section';
-      sec.className = 'catalog-section search-results-section';
-      sec.innerHTML = `
-        <div class="catalog-inner">
-          <div class="catalog-header">
-            <div>
-              <h2 class="catalog-title">🔍 Resultados para "${escapeHtml(query)}"</h2>
-              <p class="catalog-sub" id="search-result-count"></p>
-            </div>
-          </div>
-          <div id="search-results-grid" class="product-grid"></div>
-          <div id="search-empty" class="search-empty-wrap hidden">
-            <div class="search-empty-icon">🔍</div>
-            <h3 class="search-empty-title">No encontramos "${escapeHtml(query)}"</h3>
-            <p class="search-empty-sub">Intenta con otro nombre, marca o categoría</p>
-          </div>
-        </div>`;
-      el('catalogo').prepend(sec);
-    } else {
-      // Update title
-      searchResultsEl.style.display = '';
-      searchResultsEl.querySelector('.catalog-title').textContent = `🔍 Resultados para "${escapeHtml(query)}"`;
-      // Re-escape inner text for empty state
-      const emptyTitle = searchResultsEl.querySelector('.search-empty-title');
-      if (emptyTitle) emptyTitle.textContent = `No encontramos "${query}"`;
-    }
-
-    db.auth.getSession().then(({ data: { session } }) => {
-      const grid = el('search-results-grid');
-      const emptyEl = el('search-empty');
-      const countEl = el('search-result-count');
+  db.auth.getSession().then(({ data: { session } }) => {
+    Object.keys(CATS).forEach(cat => {
+      const grid = el(`grid-${cat}`);
+      const emptyDiv = el(`empty-${cat}`);
+      const countEl = el(`count-${cat}`);
+      let list = products.filter(p => p.category === cat);
+      if (countEl) countEl.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
       if (!grid) return;
       grid.innerHTML = '';
-
-      if (countEl) countEl.textContent = allMatches.length
-        ? `${allMatches.length} producto${allMatches.length !== 1 ? 's' : ''} encontrado${allMatches.length !== 1 ? 's' : ''}`
-        : '';
-
-      if (!allMatches.length) {
-        if (emptyEl) emptyEl.classList.remove('hidden');
+      if (!list.length) {
+        if (emptyDiv) emptyDiv.classList.remove('hidden');
         return;
       }
-      if (emptyEl) emptyEl.classList.add('hidden');
-
-      allMatches.forEach(p => {
+      if (emptyDiv) emptyDiv.classList.add('hidden');
+      list.forEach(p => {
         const card = buildProductCard(p, session);
         grid.appendChild(card);
       });
     });
-
-  } else {
-    // Normal mode: remove search section if exists, show all cat sections
-    const existing = el('search-results-section');
-    if (existing) existing.remove();
-    document.querySelectorAll('.catalog-section').forEach(s => s.style.display = '');
-
-    db.auth.getSession().then(({ data: { session } }) => {
-      Object.keys(CATS).forEach(cat => {
-        const cat_info = CATS[cat];
-        const grid = el(`grid-${cat}`);
-        const emptyDiv = el(`empty-${cat}`);
-        const countEl = el(`count-${cat}`);
-
-        let list = products.filter(p => p.category === cat);
-        if (countEl) countEl.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
-        if (!grid) return;
-        grid.innerHTML = '';
-
-        if (!list.length) {
-          if (emptyDiv) emptyDiv.classList.remove('hidden');
-          return;
-        }
-        if (emptyDiv) emptyDiv.classList.add('hidden');
-
-        list.forEach(p => {
-          const card = buildProductCard(p, session);
-          grid.appendChild(card);
-        });
-      });
-
-      // Reorder sections after render
-      reorderSections();
-    });
-  }
+    reorderSections();
+  });
 }
 
 function buildProductCard(p, session) {
@@ -330,6 +396,7 @@ function buildProductCard(p, session) {
         <button class="card-cta">Ver detalle</button>
       </div>
     </div>`;
+
   card.addEventListener('click', () => openModal(p));
 
   if (session) {
@@ -347,7 +414,6 @@ function escapeHtml(str) {
   return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
-// Keep renderCatalog as alias for compatibility
 function renderCatalog() { renderAllCatalogs(); }
 
 function buildChips(p) {
@@ -373,44 +439,11 @@ function colorCss(name) {
   return COLOR_MAP[k] || COLOR_MAP[name.toLowerCase()] || '#a0a0a0';
 }
 
-// ── SEARCH EXPAND ──
-function initSearchExpand() {
-  const headerInner = document.querySelector('.header-inner');
-  const searchInput = el('search-input');
-  const clearBtn = document.querySelector('.search-clear-btn');
-
-  if (!searchInput || !headerInner) return;
-
-  searchInput.addEventListener('focus', () => {
-    headerInner.classList.add('search-expanded');
-  });
-
-  searchInput.addEventListener('blur', () => {
-    if (!searchInput.value) {
-      setTimeout(() => headerInner.classList.remove('search-expanded'), 200);
-    }
-  });
-
-  if (clearBtn) {
-    searchInput.addEventListener('input', () => {
-      clearBtn.classList.toggle('visible', searchInput.value.length > 0);
-    });
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      clearBtn.classList.remove('visible');
-      headerInner.classList.remove('search-expanded');
-      renderAllCatalogs();
-      searchInput.blur();
-    });
-  }
-}
-
-// ── BACK GESTURE / POPSTATE to close modal ──
+// ── BACK GESTURE ──
 function initBackGesture() {
   window.addEventListener('popstate', () => {
-    // Close whichever modal is open
     if (!el('modal-product').classList.contains('hidden')) {
-      closeModal(false); // false = don't pushState again
+      closeModal(false);
     } else if (!el('zoom-overlay').classList.contains('hidden')) {
       closeZoom(false);
     } else if (!el('modal-edit').classList.contains('hidden')) {
@@ -418,28 +451,28 @@ function initBackGesture() {
     }
   });
 
-  // Touch swipe down to close modal on mobile
+  // Swipe down to close modal on mobile
   let touchStartY = 0;
   el('modal-product').addEventListener('touchstart', e => {
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
   el('modal-product').addEventListener('touchend', e => {
     const dy = e.changedTouches[0].clientY - touchStartY;
-    if (dy > 80) closeModal(); // swipe down 80px
+    if (dy > 80) closeModal();
   }, { passive: true });
 }
 
-// ── PRODUCT MODAL ──
+// ═══════════════════════════════════════════
+// FIX 3 + 4 + 5 + 6: PRODUCT MODAL
+// ═══════════════════════════════════════════
 function openModal(p) {
   galleryImgs = p.images?.length ? p.images : [];
   galleryIdx = 0;
   const cat = CATS[p.category];
   const st  = STATUS[p.estado] || STATUS.disponible;
 
-  // Push state so back button works
   history.pushState({ modal: 'product' }, '');
 
-  // WhatsApp button
   const waEnabled = (p.estado === 'disponible' || p.estado === 'pocas');
   const waMsg = encodeURIComponent(`Hola, me interesa el ${p.name} (Q${p.price}), ¿está disponible?`);
   const waBtn = waEnabled
@@ -450,7 +483,6 @@ function openModal(p) {
         <i class="fa fa-whatsapp" style="font-size:20px;"></i> No disponible por WhatsApp aún
        </button>`;
 
-  // Agotado notice
   const agotadoNotice = p.estado === 'agotado'
     ? `<div class="agotado-notice">
         <div class="agotado-notice-icon">🚫</div>
@@ -458,16 +490,27 @@ function openModal(p) {
           <strong>Producto agotado</strong>
           <p>Este producto no está disponible actualmente. Escríbenos al WhatsApp para saber cuándo llega o para reservar.</p>
         </div>
+       </div>` : '';
+
+  const preventaNotice = p.estado === 'preventa'
+    ? `<div class="preventa-notice">🔔 Próximamente disponible en local · Tercer Cantón, San Pedro Yepocapa</div>` : '';
+
+  const statusBadge = `<div class="modal-status-badge ${st.cls}"><span class="status-dot"></span>${st.label}</div>`;
+
+  // FIX 6: hint de zoom diferente en móvil vs desktop
+  const zoomHint = galleryImgs.length
+    ? `<div class="zoom-hint-label">
+        <span class="desktop-hint">🔍 Pasa el cursor para hacer zoom</span>
+        <span class="mobile-hint">🔍 Doble tap para hacer zoom</span>
        </div>`
     : '';
 
-  // Preventa notice
-  const preventaNotice = p.estado === 'preventa'
-    ? `<div class="preventa-notice">🔔 Próximamente disponible en local · Tercer Cantón, San Pedro Yepocapa</div>`
-    : '';
-
-  // Status badge for modal — bigger
-  const statusBadge = `<div class="modal-status-badge ${st.cls}"><span class="status-dot"></span>${st.label}</div>`;
+  // FIX 5: flechas de galería siempre visibles, dentro del wrap de imagen
+  const galleryNav = galleryImgs.length > 1
+    ? `<div class="modal-gallery-nav">
+        <button class="gallery-arrow" id="gal-prev">&#8249;</button>
+        <button class="gallery-arrow" id="gal-next">&#8250;</button>
+       </div>` : '';
 
   const content = el('modal-content');
   content.innerHTML = `
@@ -476,12 +519,8 @@ function openModal(p) {
         ${galleryImgs.length
           ? `<img class="modal-main-img" id="modal-main-img" src="${galleryImgs[0]}" alt="${p.name}" draggable="false"/>`
           : `<div class="modal-no-img">${cat.icon}</div>`}
-        ${galleryImgs.length ? `<div class="zoom-hint-label">🔍 Pasa el cursor para hacer zoom</div>` : ''}
-        ${galleryImgs.length > 1 ? `
-          <div class="modal-gallery-nav">
-            <button class="gallery-arrow" id="gal-prev">‹</button>
-            <button class="gallery-arrow" id="gal-next">›</button>
-          </div>` : ''}
+        ${zoomHint}
+        ${galleryNav}
       </div>
       ${galleryImgs.length > 1 ? `
         <div class="modal-thumbs" id="modal-thumbs">
@@ -518,21 +557,47 @@ function openModal(p) {
       </div>
     </div>`;
 
+  // FIX 5: bind flechas
   if (galleryImgs.length > 1) {
-    el('gal-prev')?.addEventListener('click', e => { e.stopPropagation(); changeGal(-1); });
-    el('gal-next')?.addEventListener('click', e => { e.stopPropagation(); changeGal(1); });
+    const prevBtn = el('gal-prev');
+    const nextBtn = el('gal-next');
+    if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); changeGal(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); changeGal(1); });
     document.querySelectorAll('.modal-thumb').forEach(t => {
       t.addEventListener('click', () => goGal(parseInt(t.dataset.idx)));
     });
   }
 
+  // FIX 3: imagen bien contenida — zoom en desktop
   const mainWrap = el('zoom-source-wrap');
   const mainImg  = el('modal-main-img');
+
   if (mainImg) {
-    mainWrap.addEventListener('click', e => { e.stopPropagation(); openZoom(mainImg.src); });
+    // Desktop: click abre zoom overlay
+    mainWrap.addEventListener('click', e => {
+      // Si el click fue en una flecha, no abrir zoom
+      if (e.target.closest('.gallery-arrow')) return;
+      e.stopPropagation();
+      openZoom(mainImg.src);
+    });
     mainImg.style.cursor = 'zoom-in';
+
+    // FIX 6: Móvil — doble tap abre zoom
+    let lastTap = 0;
+    mainWrap.addEventListener('touchend', e => {
+      if (e.target.closest('.gallery-arrow')) return;
+      const now = Date.now();
+      const diff = now - lastTap;
+      if (diff < 300 && diff > 0) {
+        // Doble tap
+        e.preventDefault();
+        openZoom(mainImg.src);
+      }
+      lastTap = now;
+    }, { passive: false });
   }
 
+  // Colores
   document.querySelectorAll('.color-opt').forEach(opt => {
     opt.addEventListener('click', () => {
       document.querySelectorAll('.color-opt').forEach(o => o.classList.remove('selected'));
@@ -540,6 +605,8 @@ function openModal(p) {
     });
   });
 
+  // FIX 4: el modal NO se cierra al hacer click en el overlay
+  // Solo se cierra con el botón X (ya configurado en bindAll)
   el('modal-product').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }
@@ -555,7 +622,6 @@ function goGal(idx) {
 function closeModal(pushState = true) {
   el('modal-product').classList.add('hidden');
   document.body.style.overflow = '';
-  // If closed via X or backdrop (not back button), pop the state
   if (pushState && history.state?.modal === 'product') {
     history.back();
   }
@@ -582,7 +648,11 @@ function openZoom(src) {
   document.body.style.overflow = 'hidden';
   zImg.onload = () => setupZoomBg();
   if (zImg.complete) setupZoomBg();
-  function setupZoomBg() { zResult.style.backgroundImage = `url(${src})`; zResult.style.display = 'block'; }
+
+  function setupZoomBg() {
+    zResult.style.backgroundImage = `url(${src})`;
+    zResult.style.display = 'block';
+  }
   function onMove(e) {
     const rect = zContainer.getBoundingClientRect();
     let x = Math.max(zLens.offsetWidth/2, Math.min(e.clientX - rect.left, rect.width - zLens.offsetWidth/2));
@@ -595,13 +665,26 @@ function openZoom(src) {
     zResult.style.backgroundPosition = `${-(x*ratio - zResult.offsetWidth/2)}px ${-(y*ratio - zResult.offsetHeight/2)}px`;
     zResult.style.display = 'block';
   }
-  function onTouch(e) { e.preventDefault(); const t = e.touches[0]; onMove({ clientX: t.clientX, clientY: t.clientY }); }
+  // FIX 6: zoom táctil en móvil — mover con un dedo
+  function onTouch(e) {
+    e.preventDefault();
+    const t = e.touches[0];
+    onMove({ clientX: t.clientX, clientY: t.clientY });
+  }
   zContainer.addEventListener('mousemove', onMove);
   zContainer.addEventListener('touchmove', onTouch, { passive: false });
-  zContainer.addEventListener('mouseleave', () => { zLens.style.display='none'; zResult.style.display='none'; });
-  el('btn-close-zoom').onclick = closeZoom;
-  el('zoom-bg').onclick = closeZoom;
-  zContainer._cleanup = () => { zContainer.removeEventListener('mousemove', onMove); zContainer.removeEventListener('touchmove', onTouch); };
+  zContainer.addEventListener('touchstart', onTouch, { passive: false });
+  zContainer.addEventListener('mouseleave', () => {
+    zLens.style.display='none';
+    // No ocultar result en desktop para que no parpadee
+  });
+  el('btn-close-zoom').onclick = () => closeZoom();
+  el('zoom-bg').onclick = () => closeZoom();
+  zContainer._cleanup = () => {
+    zContainer.removeEventListener('mousemove', onMove);
+    zContainer.removeEventListener('touchmove', onTouch);
+    zContainer.removeEventListener('touchstart', onTouch);
+  };
 }
 
 function closeZoom(pushState = true) {
@@ -795,7 +878,6 @@ function renderEditGallery() {
   slot.style.display=editImages.length>=6?'none':'flex';
 }
 
-// ── UPLOAD IMAGE ──
 async function uploadImage(file) {
   const ext = file.name.split('.').pop();
   const path = `${uid()}.${ext}`;
@@ -889,7 +971,7 @@ function bindAll() {
     });
   });
 
-  // Highlight active nav link on scroll
+  // Highlight active nav link
   const sections = Object.keys(CATS).map(cat => document.getElementById(`sec-${cat}`)).filter(Boolean);
   const navLinks = document.querySelectorAll('.cat-nav-link');
   const observer = new IntersectionObserver((entries) => {
@@ -904,9 +986,7 @@ function bindAll() {
   }, { threshold: 0.3 });
   sections.forEach(s => observer.observe(s));
 
-  ['search-input','search-mobile'].forEach(id => { el(id)?.addEventListener('input', renderAllCatalogs); });
-
-  // Secret login — 5 clicks on footer
+  // Secret login — 5 clicks footer
   let secretClicks = 0, secretTimer;
   el('secret-login-trigger').addEventListener('click', () => {
     secretClicks++;
@@ -928,11 +1008,9 @@ function bindAll() {
   el('btn-open-panel')?.addEventListener('click', showAdminPanel);
   el('btn-manage-panel')?.addEventListener('click', showAdminPanel);
   el('btn-logout')?.addEventListener('click', logout);
-
   el('btn-close-admin-panel')?.addEventListener('click', closeAdminOverlay);
   el('btn-close-admin-x')?.addEventListener('click', closeAdminOverlay);
   el('btn-logout-panel')?.addEventListener('click', logout);
-
   el('admin-overlay').addEventListener('click', e => {
     if (e.target === el('admin-overlay')) closeAdminOverlay();
   });
@@ -940,7 +1018,7 @@ function bindAll() {
   el('btn-login').addEventListener('click', login);
   el('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
 
-  // Category pills in admin form
+  // Category pills
   document.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
@@ -958,9 +1036,9 @@ function bindAll() {
 
   el('btn-add-product').addEventListener('click', addProduct);
 
-  // Modal close — X button and backdrop
+  // FIX 4: modal solo cierra con botón X — NO con click fuera
   el('btn-close-modal').addEventListener('click', () => closeModal());
-  el('modal-product').addEventListener('click', e => { if(e.target===el('modal-product')) closeModal(); });
+  // NO hay listener de click en el backdrop del modal-product
 
   el('btn-close-edit').addEventListener('click', () => closeEditModal());
   el('btn-save-edit').addEventListener('click', saveEdit);
@@ -1045,6 +1123,7 @@ function bindAll() {
 
   document.addEventListener('keydown', e => {
     if(e.key==='Escape') {
+      if (searchPanelActive) { closeSearchPanel(); return; }
       if (!el('zoom-overlay').classList.contains('hidden')) { closeZoom(); return; }
       if (!el('modal-product').classList.contains('hidden')) { closeModal(); return; }
       if (!el('modal-edit').classList.contains('hidden')) { closeEditModal(); return; }
