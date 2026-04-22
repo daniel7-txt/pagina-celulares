@@ -22,12 +22,12 @@
       </div>
     </a>
     <nav class="cat-nav" id="cat-nav">
-      <button class="cat-btn active" data-cat="celulares">📱 Celulares</button>
-      <button class="cat-btn" data-cat="auriculares">🎧 Auriculares</button>
-      <button class="cat-btn" data-cat="relojes">⌚ Relojes</button>
-      <button class="cat-btn" data-cat="bocinas">🔊 Bocinas</button>
-      <button class="cat-btn" data-cat="cargadores">⚡ Cargadores</button>
-      <button class="cat-btn" data-cat="accesorios">🎒 Accesorios</button>
+      <a class="cat-nav-link" href="#sec-celulares">📱 Celulares</a>
+      <a class="cat-nav-link" href="#sec-auriculares">🎧 Auriculares</a>
+      <a class="cat-nav-link" href="#sec-relojes">⌚ Relojes</a>
+      <a class="cat-nav-link" href="#sec-bocinas">🔊 Bocinas</a>
+      <a class="cat-nav-link" href="#sec-cargadores">⚡ Cargadores</a>
+      <a class="cat-nav-link" href="#sec-accesorios">🎒 Accesorios</a>
     </nav>
     <div class="header-end">
       <div class="search-box">
@@ -40,12 +40,12 @@
     </div>
   </div>
   <div class="mobile-nav hidden" id="mobile-nav">
-    <button class="cat-btn active" data-cat="celulares">📱 Celulares</button>
-    <button class="cat-btn" data-cat="auriculares">🎧 Auriculares</button>
-    <button class="cat-btn" data-cat="relojes">⌚ Relojes</button>
-    <button class="cat-btn" data-cat="bocinas">🔊 Bocinas</button>
-    <button class="cat-btn" data-cat="cargadores">⚡ Cargadores</button>
-    <button class="cat-btn" data-cat="accesorios">🎒 Accesorios</button>
+    <a class="cat-btn" href="#sec-celulares">📱 Celulares</a>
+    <a class="cat-btn" href="#sec-auriculares">🎧 Auriculares</a>
+    <a class="cat-btn" href="#sec-relojes">⌚ Relojes</a>
+    <a class="cat-btn" href="#sec-bocinas">🔊 Bocinas</a>
+    <a class="cat-btn" href="#sec-cargadores">⚡ Cargadores</a>
+    <a class="cat-btn" href="#sec-accesorios">🎒 Accesorios</a>
     <div class="mobile-search">
       <span>🔍</span>
       <input type="text" id="search-mobile" placeholder="Buscar..."/>
@@ -67,7 +67,7 @@
       </h1>
       <p class="hero-desc">Celulares, auriculares, relojes inteligentes, bocinas, cargadores y accesorios. Todo original, todo con garantía.</p>
       <div class="hero-actions">
-        <a href="#catalogo" class="btn-primary">Ver catálogo →</a>
+        <a href="#sec-celulares" class="btn-primary">Ver catálogo →</a>
         <a href="#tienda" class="btn-secondary">📍 Nuestra tienda</a>
       </div>
       <div class="hero-stats">
@@ -88,35 +88,135 @@
     <div class="hero-visual">
       <div class="hero-phone-glow"></div>
       <div class="hero-grid-cards">
-        <div class="hero-card c1"><div class="hero-card-icon">📱</div><span>Celulares</span></div>
-        <div class="hero-card c2"><div class="hero-card-icon">🎧</div><span>Auriculares</span></div>
-        <div class="hero-card c3"><div class="hero-card-icon">⌚</div><span>Relojes</span></div>
-        <div class="hero-card c4"><div class="hero-card-icon">🔊</div><span>Bocinas</span></div>
-        <div class="hero-card c5"><div class="hero-card-icon">⚡</div><span>Cargadores</span></div>
-        <div class="hero-card c6"><div class="hero-card-icon">🎒</div><span>Accesorios</span></div>
+        <a class="hero-card c1" href="#sec-celulares"><div class="hero-card-icon">📱</div><span>Celulares</span></a>
+        <a class="hero-card c2" href="#sec-auriculares"><div class="hero-card-icon">🎧</div><span>Auriculares</span></a>
+        <a class="hero-card c3" href="#sec-relojes"><div class="hero-card-icon">⌚</div><span>Relojes</span></a>
+        <a class="hero-card c4" href="#sec-bocinas"><div class="hero-card-icon">🔊</div><span>Bocinas</span></a>
+        <a class="hero-card c5" href="#sec-cargadores"><div class="hero-card-icon">⚡</div><span>Cargadores</span></a>
+        <a class="hero-card c6" href="#sec-accesorios"><div class="hero-card-icon">🎒</div><span>Accesorios</span></a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── CATÁLOGO ── -->
-<section id="catalogo" class="catalog-section">
-  <div class="catalog-inner">
-    <div class="catalog-header">
-      <div>
-        <h2 class="catalog-title" id="catalog-title">📱 Celulares</h2>
-        <p class="catalog-sub" id="catalog-sub">Los mejores smartphones del mercado</p>
+<!-- ── CATÁLOGO — todas las secciones apiladas ── -->
+<div id="catalogo" class="all-catalogs">
+
+  <!-- Celulares -->
+  <section id="sec-celulares" class="catalog-section">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">📱 Celulares</h2>
+          <p class="catalog-sub">Los mejores smartphones del mercado</p>
+        </div>
+        <span class="catalog-count" id="count-celulares">0 productos</span>
       </div>
-      <span class="catalog-count" id="catalog-count">0 productos</span>
+      <div id="grid-celulares" class="product-grid"></div>
+      <div id="empty-celulares" class="empty-state hidden">
+        <div class="empty-icon">📱</div>
+        <h3>Sin celulares aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
     </div>
-    <div id="product-grid" class="product-grid"></div>
-    <div id="empty-state" class="empty-state hidden">
-      <div id="empty-icon" class="empty-icon">📱</div>
-      <h3 id="empty-title">Sin productos aún</h3>
-      <p>El administrador aún no ha agregado productos en esta categoría.</p>
+  </section>
+
+  <!-- Auriculares -->
+  <section id="sec-auriculares" class="catalog-section catalog-section-alt">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">🎧 Auriculares</h2>
+          <p class="catalog-sub">Audio de alta calidad para cada momento</p>
+        </div>
+        <span class="catalog-count" id="count-auriculares">0 productos</span>
+      </div>
+      <div id="grid-auriculares" class="product-grid"></div>
+      <div id="empty-auriculares" class="empty-state hidden">
+        <div class="empty-icon">🎧</div>
+        <h3>Sin auriculares aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- Relojes -->
+  <section id="sec-relojes" class="catalog-section">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">⌚ Relojes</h2>
+          <p class="catalog-sub">Smartwatches y relojes de última generación</p>
+        </div>
+        <span class="catalog-count" id="count-relojes">0 productos</span>
+      </div>
+      <div id="grid-relojes" class="product-grid"></div>
+      <div id="empty-relojes" class="empty-state hidden">
+        <div class="empty-icon">⌚</div>
+        <h3>Sin relojes aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bocinas -->
+  <section id="sec-bocinas" class="catalog-section catalog-section-alt">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">🔊 Bocinas</h2>
+          <p class="catalog-sub">Sonido potente para cualquier ambiente</p>
+        </div>
+        <span class="catalog-count" id="count-bocinas">0 productos</span>
+      </div>
+      <div id="grid-bocinas" class="product-grid"></div>
+      <div id="empty-bocinas" class="empty-state hidden">
+        <div class="empty-icon">🔊</div>
+        <h3>Sin bocinas aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cargadores -->
+  <section id="sec-cargadores" class="catalog-section">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">⚡ Cargadores</h2>
+          <p class="catalog-sub">Carga rápida y segura para tus dispositivos</p>
+        </div>
+        <span class="catalog-count" id="count-cargadores">0 productos</span>
+      </div>
+      <div id="grid-cargadores" class="product-grid"></div>
+      <div id="empty-cargadores" class="empty-state hidden">
+        <div class="empty-icon">⚡</div>
+        <h3>Sin cargadores aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accesorios -->
+  <section id="sec-accesorios" class="catalog-section catalog-section-alt">
+    <div class="catalog-inner">
+      <div class="catalog-header">
+        <div>
+          <h2 class="catalog-title">🎒 Accesorios</h2>
+          <p class="catalog-sub">Fundas, cables, vidrios y más</p>
+        </div>
+        <span class="catalog-count" id="count-accesorios">0 productos</span>
+      </div>
+      <div id="grid-accesorios" class="product-grid"></div>
+      <div id="empty-accesorios" class="empty-state hidden">
+        <div class="empty-icon">🎒</div>
+        <h3>Sin accesorios aún</h3>
+        <p>El administrador aún no ha agregado productos en esta categoría.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <!-- ── STORE INFO ── -->
 <section id="tienda" class="store-section">
@@ -205,7 +305,6 @@
   </div>
 
   <div id="admin-panel" class="admin-panel hidden">
-    <!-- Header con X en lugar de "Cerrar sesión" -->
     <div class="admin-header">
       <div class="logo" style="gap:10px;display:flex;align-items:center;">
         <div class="logo-mark" style="width:32px;height:32px;font-size:13px;">T</div>
@@ -273,7 +372,7 @@
               <option value="disponible">✅ Disponible</option>
               <option value="pocas">⚠️ Pocas unidades</option>
               <option value="agotado">❌ Agotado</option>
-              <option value="preventa">🔔 Preventa</option>
+              <option value="preventa">🔔 Próximamente en local</option>
             </select>
           </div>
         </div>
@@ -356,7 +455,7 @@
         <div class="color-tag-list" id="edit-color-chips"></div>
       </div>
       <div class="field-row"><div class="field-group"><label>Nombre *</label><input type="text" id="edit-name"/></div><div class="field-group"><label>Marca *</label><input type="text" id="edit-brand"/></div></div>
-      <div class="field-row"><div class="field-group"><label>Precio (Q) *</label><input type="number" id="edit-price" min="0"/></div><div class="field-group"><label>Estado</label><select id="edit-estado"><option value="disponible">✅ Disponible</option><option value="pocas">⚠️ Pocas unidades</option><option value="agotado">❌ Agotado</option><option value="preventa">🔔 Preventa</option></select></div></div>
+      <div class="field-row"><div class="field-group"><label>Precio (Q) *</label><input type="number" id="edit-price" min="0"/></div><div class="field-group"><label>Estado</label><select id="edit-estado"><option value="disponible">✅ Disponible</option><option value="pocas">⚠️ Pocas unidades</option><option value="agotado">❌ Agotado</option><option value="preventa">🔔 Próximamente en local</option></select></div></div>
       <div id="edit-specs-celulares" class="specs-block"><div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="edit-storage"/></div><div class="field-group"><label>RAM *</label><input type="text" id="edit-ram"/></div></div><div class="field-group"><label>Procesador *</label><input type="text" id="edit-cpu"/></div><div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="edit-screen"/></div><div class="field-group"><label>Batería</label><input type="text" id="edit-battery"/></div></div><div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="edit-camara"/></div><div class="field-group"><label>Sistema</label><input type="text" id="edit-os"/></div></div></div>
       <div id="edit-specs-auriculares" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-auri"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-autonomia"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="edit-anc"/></div></div></div>
       <div id="edit-specs-relojes" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-reloj"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-bat-reloj"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="edit-resist"/></div></div></div>
@@ -382,12 +481,12 @@
     </div>
     <div class="footer-col">
       <h4>Categorías</h4>
-      <a data-cat-footer="celulares">📱 Celulares</a>
-      <a data-cat-footer="auriculares">🎧 Auriculares</a>
-      <a data-cat-footer="relojes">⌚ Relojes</a>
-      <a data-cat-footer="bocinas">🔊 Bocinas</a>
-      <a data-cat-footer="cargadores">⚡ Cargadores</a>
-      <a data-cat-footer="accesorios">🎒 Accesorios</a>
+      <a href="#sec-celulares">📱 Celulares</a>
+      <a href="#sec-auriculares">🎧 Auriculares</a>
+      <a href="#sec-relojes">⌚ Relojes</a>
+      <a href="#sec-bocinas">🔊 Bocinas</a>
+      <a href="#sec-cargadores">⚡ Cargadores</a>
+      <a href="#sec-accesorios">🎒 Accesorios</a>
     </div>
     <div class="footer-col">
       <h4>Contacto</h4>

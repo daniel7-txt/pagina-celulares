@@ -20,10 +20,10 @@ const CATS = {
   accesorios:  { label:'Accesorios',  icon:'🎒', sub:'Fundas, cables, vidrios y más' }
 };
 const STATUS = {
-  disponible: { label:'Disponible',    cls:'s-disponible' },
-  pocas:      { label:'Pocas unidades', cls:'s-pocas' },
-  agotado:    { label:'Agotado',       cls:'s-agotado' },
-  preventa:   { label:'Preventa',      cls:'s-preventa' }
+  disponible: { label:'Disponible',           cls:'s-disponible' },
+  pocas:      { label:'Pocas unidades',        cls:'s-pocas' },
+  agotado:    { label:'Agotado',              cls:'s-agotado' },
+  preventa:   { label:'Próximamente en local', cls:'s-preventa' }
 };
 const COLOR_MAP = {
   negro:'#1a1a1a',blanco:'#f5f5f5',rojo:'#ef4444',azul:'#3b82f6',verde:'#22c55e',
@@ -40,7 +40,6 @@ const COLOR_MAP = {
 
 // ── STATE ──
 let products = [];
-let activeCat = 'celulares';
 let adminFilterCat = 'todos';
 let addCat = 'celulares';
 let addImages = [], addColors = [];
@@ -51,7 +50,7 @@ let galleryImgs = [], galleryIdx = 0;
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', async () => {
   await loadProducts();
-  renderCatalog();
+  renderAllCatalogs();
   await checkSession();
   bindAll();
 });
@@ -164,71 +163,77 @@ function showAdminPanel() {
   renderAdminList();
 }
 
-// ── CATALOG RENDER ──
-function renderCatalog() {
+// ── CATALOG RENDER — all sections stacked ──
+function renderAllCatalogs() {
   const query = (el('search-input')?.value || el('search-mobile')?.value || '').toLowerCase().trim();
-  const grid = el('product-grid'), emptyDiv = el('empty-state');
-  const cat = CATS[activeCat];
 
-  el('catalog-title').textContent = `${cat.icon} ${cat.label}`;
-  el('catalog-sub').textContent = cat.sub;
+  db.auth.getSession().then(({ data: { session } }) => {
+    Object.keys(CATS).forEach(cat => {
+      const cat_info = CATS[cat];
+      const grid = el(`grid-${cat}`);
+      const emptyDiv = el(`empty-${cat}`);
+      const countEl = el(`count-${cat}`);
 
-  let list = products.filter(p => p.category === activeCat);
-  if (query) list = list.filter(p =>
-    p.name.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query) || (p.desc||'').toLowerCase().includes(query)
-  );
+      let list = products.filter(p => p.category === cat);
+      if (query) list = list.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.brand.toLowerCase().includes(query) ||
+        (p.desc||'').toLowerCase().includes(query)
+      );
 
-  el('catalog-count').textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
-  grid.innerHTML = '';
+      if (countEl) countEl.textContent = `${list.length} producto${list.length !== 1 ? 's' : ''}`;
+      if (!grid) return;
+      grid.innerHTML = '';
 
-  if (!list.length) {
-    emptyDiv.classList.remove('hidden');
-    el('empty-icon').textContent = cat.icon;
-    el('empty-title').textContent = query ? 'Sin resultados' : `Sin ${cat.label} aún`;
-    return;
-  }
-  emptyDiv.classList.add('hidden');
-
-  list.forEach(p => {
-    const card = document.createElement('div');
-    card.className = `product-card pc-${p.category}`;
-    const img0 = p.images?.[0] || '';
-    const st = STATUS[p.estado] || STATUS.disponible;
-    card.innerHTML = `
-      <div class="card-img-wrap">
-        ${img0
-          ? `<img src="${img0}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-no-img\\'>${cat.icon}</div>'">`
-          : `<div class="card-no-img">${cat.icon}</div>`}
-        <div class="card-brand-badge">${p.brand}</div>
-        <div class="card-status-badge ${st.cls}">${st.label}</div>
-        ${(p.images?.length||0)>1 ? `<div class="card-img-count">🖼 ${p.images.length}</div>` : ''}
-      </div>
-      <div class="card-body">
-        <div class="card-cat-label">${cat.icon} ${cat.label}</div>
-        <div class="card-name">${p.name}</div>
-        <div class="card-chips">${buildChips(p)}</div>
-        ${buildColorDots(p.colors||[])}
-        <div class="card-footer">
-          <div class="card-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
-          <button class="card-cta">Ver detalle</button>
-        </div>
-      </div>`;
-    card.addEventListener('click', () => openModal(p));
-
-    db.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        const editBtn = document.createElement('button');
-        editBtn.className = 'card-admin-edit';
-        editBtn.textContent = '✏️ Editar';
-        editBtn.style.cssText = 'margin-top:6px;width:100%;';
-        editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
-        card.querySelector('.card-body').appendChild(editBtn);
+      if (!list.length) {
+        if (emptyDiv) emptyDiv.classList.remove('hidden');
+        return;
       }
-    });
+      if (emptyDiv) emptyDiv.classList.add('hidden');
 
-    grid.appendChild(card);
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = `product-card pc-${p.category}`;
+        const img0 = p.images?.[0] || '';
+        const st = STATUS[p.estado] || STATUS.disponible;
+        card.innerHTML = `
+          <div class="card-img-wrap">
+            ${img0
+              ? `<img src="${img0}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-no-img\\'>${cat_info.icon}</div>'">`
+              : `<div class="card-no-img">${cat_info.icon}</div>`}
+            <div class="card-brand-badge">${p.brand}</div>
+            <div class="card-status-badge ${st.cls}">${st.label}</div>
+            ${(p.images?.length||0)>1 ? `<div class="card-img-count">🖼 ${p.images.length}</div>` : ''}
+          </div>
+          <div class="card-body">
+            <div class="card-cat-label">${cat_info.icon} ${cat_info.label}</div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-chips">${buildChips(p)}</div>
+            ${buildColorDots(p.colors||[])}
+            <div class="card-footer">
+              <div class="card-price"><sup>Q</sup>${fmtPrice(p.price)}</div>
+              <button class="card-cta">Ver detalle</button>
+            </div>
+          </div>`;
+        card.addEventListener('click', () => openModal(p));
+
+        if (session) {
+          const editBtn = document.createElement('button');
+          editBtn.className = 'card-admin-edit';
+          editBtn.textContent = '✏️ Editar';
+          editBtn.style.cssText = 'margin-top:6px;width:100%;';
+          editBtn.addEventListener('click', e => { e.stopPropagation(); openEditModal(p.id); });
+          card.querySelector('.card-body').appendChild(editBtn);
+        }
+
+        grid.appendChild(card);
+      });
+    });
   });
 }
+
+// Keep renderCatalog as alias for compatibility
+function renderCatalog() { renderAllCatalogs(); }
 
 function buildChips(p) {
   const c = t => `<span class="chip">${t}</span>`;
@@ -260,6 +265,22 @@ function openModal(p) {
   const cat = CATS[p.category];
   const st  = STATUS[p.estado] || STATUS.disponible;
 
+  // WhatsApp button — disabled unless estado is 'disponible' or 'pocas'
+  const waEnabled = (p.estado === 'disponible' || p.estado === 'pocas');
+  const waMsg = encodeURIComponent(`Hola, me interesa el ${p.name} (Q${p.price}), ¿está disponible?`);
+  const waBtn = waEnabled
+    ? `<button class="btn-whatsapp-modal" onclick="window.open('https://wa.me/50254834689?text=${waMsg}','_blank')">
+        <i class="fa fa-whatsapp" style="font-size:20px;"></i> Consultar por WhatsApp
+       </button>`
+    : `<button class="btn-whatsapp-modal disabled" disabled>
+        <i class="fa fa-whatsapp" style="font-size:20px;"></i> No disponible por WhatsApp aún
+       </button>`;
+
+  // Preventa notice
+  const preventaNotice = p.estado === 'preventa'
+    ? `<div class="preventa-notice">🔔 Próximamente disponible en local · Tercer Cantón, San Pedro Yepocapa</div>`
+    : '';
+
   const content = el('modal-content');
   content.innerHTML = `
     <div class="modal-img-side">
@@ -288,9 +309,8 @@ function openModal(p) {
         <span class="card-status-badge ${st.cls}" style="position:static;font-size:12px;padding:5px 12px;">${st.label}</span>
       </div>
       ${p.desc ? `<p class="modal-prod-desc">${p.desc}</p>` : ''}
-      <button class="btn-whatsapp-modal" onclick="window.open('https://wa.me/50254834689?text=Hola%2C%20me%20interesa%20el%20${encodeURIComponent(p.name)}%20%28Q${p.price}%29%2C%20%C2%BFestá%20disponible%3F','_blank')">
-        <i class="fa fa-whatsapp" style="font-size:20px;"></i> Consultar por WhatsApp
-      </button>
+      ${waBtn}
+      ${preventaNotice}
       ${(p.colors?.length) ? `
         <div class="color-section">
           <div class="color-section-label">🎨 Colores disponibles</div>
@@ -302,9 +322,9 @@ function openModal(p) {
               </div>`).join('')}
           </div>
         </div>` : ''}
-      <div class="modal-store-note">
+      ${!preventaNotice ? `<div class="modal-store-note">
         📍 Disponible en tienda física · Tercer Cantón, San Pedro Yepocapa
-      </div>
+      </div>` : ''}
       <div class="specs-section-modal">
         <div class="specs-section-label">Especificaciones</div>
         <div class="specs-table">${buildModalSpecs(p)}</div>
@@ -441,7 +461,7 @@ async function addProduct() {
   try {
     await saveProduct(prod);
     products.unshift(prod);
-    renderCatalog(); renderAdminList(); resetAddForm();
+    renderAllCatalogs(); renderAdminList(); resetAddForm();
     showAlert('form-msg','success',`${CATS[addCat].icon} Producto agregado en ${CATS[addCat].label}.`);
     setTimeout(()=>hideAlert('form-msg'), 3000);
   } catch(e) {
@@ -454,7 +474,7 @@ async function deleteProduct(id) {
   try {
     await removeProduct(id);
     products = products.filter(x => x.id !== id);
-    renderCatalog(); renderAdminList();
+    renderAllCatalogs(); renderAdminList();
   } catch(e) {
     alert('Error al eliminar el producto.');
   }
@@ -541,7 +561,7 @@ async function saveEdit() {
   try {
     await saveProduct(updated);
     products[idx] = updated;
-    renderCatalog(); renderAdminList();
+    renderAllCatalogs(); renderAdminList();
     showAlert('edit-msg','success','Cambios guardados ✓');
     setTimeout(closeEditModal, 800);
   } catch(e) {
@@ -661,25 +681,30 @@ function bindAll() {
     el('hamburger').classList.toggle('open');
   });
 
-  document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat===btn.dataset.cat));
-      activeCat=btn.dataset.cat;
-      el('mobile-nav').classList.add('hidden'); el('hamburger').classList.remove('open');
-      el('catalogo').scrollIntoView({behavior:'smooth'}); renderCatalog();
+  // Close mobile nav when a link is clicked
+  document.querySelectorAll('.mobile-nav .cat-btn').forEach(a => {
+    a.addEventListener('click', () => {
+      el('mobile-nav').classList.add('hidden');
+      el('hamburger').classList.remove('open');
     });
   });
 
-  document.querySelectorAll('[data-cat-footer]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const cat=a.dataset.catFooter;
-      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat===cat));
-      activeCat=cat; el('catalogo').scrollIntoView({behavior:'smooth'}); renderCatalog();
+  // Highlight active nav link on scroll
+  const sections = Object.keys(CATS).map(cat => document.getElementById(`sec-${cat}`)).filter(Boolean);
+  const navLinks = document.querySelectorAll('.cat-nav-link');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id; // e.g. sec-celulares
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
     });
-  });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
 
-  ['search-input','search-mobile'].forEach(id => { el(id)?.addEventListener('input', renderCatalog); });
+  ['search-input','search-mobile'].forEach(id => { el(id)?.addEventListener('input', renderAllCatalogs); });
 
   // Secret login — 5 clicks on footer
   let secretClicks = 0, secretTimer;
@@ -704,14 +729,10 @@ function bindAll() {
   el('btn-manage-panel')?.addEventListener('click', showAdminPanel);
   el('btn-logout')?.addEventListener('click', logout);
 
-  // Close admin overlay — X button just closes the window (doesn't logout)
   el('btn-close-admin-panel')?.addEventListener('click', closeAdminOverlay);
   el('btn-close-admin-x')?.addEventListener('click', closeAdminOverlay);
-
-  // Logout from panel header
   el('btn-logout-panel')?.addEventListener('click', logout);
 
-  // Click outside overlay to close
   el('admin-overlay').addEventListener('click', e => {
     if (e.target === el('admin-overlay')) closeAdminOverlay();
   });
@@ -719,7 +740,7 @@ function bindAll() {
   el('btn-login').addEventListener('click', login);
   el('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
 
-  // Category pills
+  // Category pills in admin form
   document.querySelectorAll('.cat-pill').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));
