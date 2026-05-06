@@ -1,0 +1,402 @@
+/* ── CATALOG.CSS ───────────────────────────────────────────────────────────────
+   Secciones de catálogo, grid de productos, tarjetas y badges de estado.
+────────────────────────────────────────────────────────────────────────────── */
+
+.all-catalogs {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── SECCIÓN ── */
+.catalog-section {
+  padding: 50px 0 60px;
+  background: var(--bg);
+}
+
+.catalog-section-alt {
+  background: var(--bg-white);
+}
+
+.catalog-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.catalog-title {
+  font-family: var(--font-head);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+
+.catalog-sub {
+  font-size: 13px;
+  color: var(--ink3);
+  margin-top: 3px;
+}
+
+.catalog-count {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink3);
+  white-space: nowrap;
+  background: var(--bg-white);
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 5px 14px;
+}
+
+.catalog-section-alt .catalog-count {
+  background: var(--bg);
+}
+
+/* ── GRID ── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ── CARD ── */
+.product-card {
+  background: var(--bg-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--med) var(--ease);
+  box-shadow: var(--shadow-sm);
+}
+
+.catalog-section-alt .product-card {
+  background: var(--bg);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
+}
+
+/* Imagen */
+.card-img-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .4s var(--ease);
+  display: block;
+}
+
+.product-card:hover .card-img-wrap img {
+  transform: scale(1.06);
+}
+
+.card-no-img {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  opacity: 0.3;
+}
+
+/* Badge de marca */
+.card-brand-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--ink2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+  max-width: calc(100% - 100px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* Contador de imágenes */
+.card-img-count {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+}
+
+/* ── BADGE DE ESTADO ── */
+.card-status-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 20px;
+  padding: 4px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+  max-width: 110px;
+  line-height: 1.3;
+}
+
+.card-status-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.s-disponible {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #86efac;
+}
+
+.s-disponible::before {
+  background: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+  animation: pulse-green 1.5s infinite;
+}
+
+.s-pocas {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fcd34d;
+}
+
+.s-pocas::before {
+  background: #d97706;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.3);
+  animation: pulse-yellow 1.5s infinite;
+}
+
+.s-agotado {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.s-agotado::before {
+  background: #dc2626;
+}
+
+.s-preventa {
+  background: #ede9fe;
+  color: #6d28d9;
+  border-color: #c4b5fd;
+}
+
+.s-preventa::before {
+  background: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.3);
+  animation: pulse-purple 1.5s infinite;
+}
+
+/* ── CUERPO DE LA CARD ── */
+.card-body {
+  padding: 14px 16px 16px;
+}
+
+.card-cat-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.pc-celulares .card-cat-label {
+  color: var(--cat-celulares);
+}
+
+.pc-auriculares .card-cat-label {
+  color: var(--cat-auriculares);
+}
+
+.pc-relojes .card-cat-label {
+  color: var(--cat-relojes);
+}
+
+.pc-bocinas .card-cat-label {
+  color: var(--cat-bocinas);
+}
+
+.pc-cargadores .card-cat-label {
+  color: var(--cat-cargadores);
+}
+
+.pc-accesorios .card-cat-label {
+  color: var(--cat-accesorios);
+}
+
+.card-name {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink3);
+}
+
+/* Color dots */
+.card-color-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.color-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.more-colors {
+  font-size: 11px;
+  color: var(--ink4);
+  font-weight: 600;
+}
+
+/* Footer de card */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-price {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.card-price sup {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink3);
+  margin-right: 1px;
+}
+
+.card-cta {
+  background: var(--accent-s);
+  color: var(--accent);
+  border: 1.5px solid rgba(26, 86, 219, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-family: var(--font-head);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--fast);
+}
+
+.card-cta:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.card-admin-edit {
+  background: rgba(26, 86, 219, 0.08);
+  color: var(--accent);
+  border: 1.5px solid rgba(26, 86, 219, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--fast);
+  font-family: var(--font-head);
+}
+
+.card-admin-edit:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.empty-icon {
+  font-size: 56px;
+  opacity: 0.2;
+  margin-bottom: 14px;
+}
+
+.empty-state h3 {
+  font-family: var(--font-head);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink2);
+}
+
+.empty-state p {
+  color: var(--ink3);
+  font-size: 14px;
+}

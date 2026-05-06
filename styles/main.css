@@ -1,0 +1,306 @@
+/* ── MAIN.CSS ──────────────────────────────────────────────────────────────────
+   Variables globales, reset, tipografía, scrollbar y botones base.
+   Este archivo debe importarse PRIMERO.
+────────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #f4f6fb;
+  --bg-white: #ffffff;
+  --bg2: #eef1f8;
+  --bg3: #e8ecf5;
+
+  --ink: #111827;
+  --ink2: #374151;
+  --ink3: #6b7280;
+  --ink4: #9ca3af;
+
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+
+  --accent: #1a56db;
+  --accent-h: #1447b0;
+  --accent-s: rgba(26, 86, 219, 0.08);
+  --accent-g: rgba(26, 86, 219, 0.15);
+
+  --green: #059669;
+  --green-s: rgba(5, 150, 105, 0.1);
+  --red: #dc2626;
+  --orange: #ea580c;
+  --yellow: #d97706;
+  --purple: #7c3aed;
+
+  --cat-celulares: #1a56db;
+  --cat-auriculares: #7c3aed;
+  --cat-relojes: #d97706;
+  --cat-bocinas: #059669;
+  --cat-cargadores: #ea580c;
+  --cat-accesorios: #db2777;
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, .06);
+  --shadow: 0 4px 16px rgba(0, 0, 0, .08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .12);
+  --shadow-xl: 0 24px 60px rgba(0, 0, 0, .15);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --fast: 0.15s;
+  --med: 0.25s;
+
+  --font-head: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+  --max-w: 1300px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink4);
+}
+
+/* ── BOTONES ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 13px 28px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--fast) var(--ease);
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--accent-h);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(26, 86, 219, 0.3);
+}
+
+.btn-primary.full {
+  width: 100%;
+  border-radius: var(--radius);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-white);
+  color: var(--ink2);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 12px 24px;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--fast);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-ghost-sm {
+  background: var(--bg2);
+  color: var(--ink3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--fast);
+}
+
+.btn-ghost-sm:hover {
+  border-color: var(--ink2);
+  color: var(--ink);
+}
+
+.btn-danger-outline {
+  background: transparent;
+  color: var(--red);
+  border: 1.5px solid rgba(220, 38, 38, 0.3);
+  border-radius: var(--radius);
+  padding: 9px 20px;
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--fast);
+}
+
+.btn-danger-outline:hover {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: var(--red);
+}
+
+/* ── ALERTAS ── */
+.alert {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.alert.success {
+  background: rgba(5, 150, 105, 0.08);
+  color: #065f46;
+  border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.alert.error {
+  background: rgba(220, 38, 38, 0.08);
+  color: #991b1b;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.alert.info {
+  background: var(--accent-s);
+  color: var(--accent);
+  border: 1px solid var(--accent-g);
+}
+
+/* ── ANIMACIONES GLOBALES ── */
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1
+  }
+}
+
+@keyframes pulse-green {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5)
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(22, 163, 74, 0)
+  }
+}
+
+@keyframes pulse-yellow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5)
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(217, 119, 6, 0)
+  }
+}
+
+@keyframes pulse-purple {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5)
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0)
+  }
+}

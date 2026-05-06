@@ -1,503 +1,356 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <title>Tecnología Yepocapa — Tecnología Original</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Tecnología Yepocapa</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/catalog.css" />
+  <link rel="stylesheet" href="styles/modal.css" />
+  <link rel="stylesheet" href="styles/responsive.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header id="site-header">
-  <div class="header-inner">
-    <a href="#" class="logo">
-      <div class="logo-mark">T</div>
-      <div class="logo-text-wrap">
-        <span class="logo-name">Tecnología</span>
-        <span class="logo-country">Yepocapa</span>
-      </div>
-    </a>
-    <nav class="cat-nav" id="cat-nav">
-      <a class="cat-nav-link" href="#sec-celulares">📱 Celulares</a>
-      <a class="cat-nav-link" href="#sec-auriculares">🎧 Auriculares</a>
-      <a class="cat-nav-link" href="#sec-relojes">⌚ Relojes</a>
-      <a class="cat-nav-link" href="#sec-bocinas">🔊 Bocinas</a>
-      <a class="cat-nav-link" href="#sec-cargadores">⚡ Cargadores</a>
-      <a class="cat-nav-link" href="#sec-accesorios">🎒 Accesorios</a>
-    </nav>
-    <div class="header-end">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Buscar productos..."/>
-        <button class="search-clear-btn" id="search-clear-btn" title="Limpiar">✕</button>
-      </div>
-      <button class="ham-btn" id="hamburger" aria-label="Menú">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-  <div class="mobile-nav hidden" id="mobile-nav">
-    <a class="cat-btn" href="#sec-celulares">📱 Celulares</a>
-    <a class="cat-btn" href="#sec-auriculares">🎧 Auriculares</a>
-    <a class="cat-btn" href="#sec-relojes">⌚ Relojes</a>
-    <a class="cat-btn" href="#sec-bocinas">🔊 Bocinas</a>
-    <a class="cat-btn" href="#sec-cargadores">⚡ Cargadores</a>
-    <a class="cat-btn" href="#sec-accesorios">🎒 Accesorios</a>
-    <div class="mobile-search">
-      <span>🔍</span>
-      <input type="text" id="search-mobile" placeholder="Buscar..."/>
-    </div>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-text">
-      <div class="hero-tag">🇬🇹 Tienda oficial en San Pedro Yepocapa</div>
-      <h1 class="hero-h1">
-        La tecnología<br/>
-        <span class="line2">que buscas,</span><br/>
-        <em>al mejor precio</em>
-      </h1>
-      <p class="hero-desc">Celulares, auriculares, relojes inteligentes, bocinas, cargadores y accesorios. Todo original, todo con garantía.</p>
-      <div class="hero-actions">
-        <a href="#sec-celulares" class="btn-primary">Ver catálogo →</a>
-        <a href="#tienda" class="btn-secondary">📍 Nuestra tienda</a>
-      </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">500<span>+</span></div>
-          <div class="hero-stat-label">Productos</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">100<span>%</span></div>
-          <div class="hero-stat-label">Original</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">5<span>★</span></div>
-          <div class="hero-stat-label">Calificación</div>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-phone-glow"></div>
-      <div class="hero-grid-cards">
-        <a class="hero-card c1" href="#sec-celulares"><div class="hero-card-icon">📱</div><span>Celulares</span></a>
-        <a class="hero-card c2" href="#sec-auriculares"><div class="hero-card-icon">🎧</div><span>Auriculares</span></a>
-        <a class="hero-card c3" href="#sec-relojes"><div class="hero-card-icon">⌚</div><span>Relojes</span></a>
-        <a class="hero-card c4" href="#sec-bocinas"><div class="hero-card-icon">🔊</div><span>Bocinas</span></a>
-        <a class="hero-card c5" href="#sec-cargadores"><div class="hero-card-icon">⚡</div><span>Cargadores</span></a>
-        <a class="hero-card c6" href="#sec-accesorios"><div class="hero-card-icon">🎒</div><span>Accesorios</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CATÁLOGO -->
-<div id="catalogo" class="all-catalogs">
-
-  <!-- Celulares -->
-  <section id="sec-celulares" class="catalog-section">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">📱 Celulares</h2>
-          <p class="catalog-sub">Los mejores smartphones del mercado</p>
-        </div>
-        <span class="catalog-count" id="count-celulares">0 productos</span>
-      </div>
-      <div id="grid-celulares" class="product-grid"></div>
-      <div id="empty-celulares" class="empty-state hidden">
-        <div class="empty-icon">📱</div>
-        <h3>Sin celulares aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Auriculares -->
-  <section id="sec-auriculares" class="catalog-section catalog-section-alt">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">🎧 Auriculares</h2>
-          <p class="catalog-sub">Audio de alta calidad para cada momento</p>
-        </div>
-        <span class="catalog-count" id="count-auriculares">0 productos</span>
-      </div>
-      <div id="grid-auriculares" class="product-grid"></div>
-      <div id="empty-auriculares" class="empty-state hidden">
-        <div class="empty-icon">🎧</div>
-        <h3>Sin auriculares aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Relojes -->
-  <section id="sec-relojes" class="catalog-section">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">⌚ Relojes</h2>
-          <p class="catalog-sub">Smartwatches y relojes de última generación</p>
-        </div>
-        <span class="catalog-count" id="count-relojes">0 productos</span>
-      </div>
-      <div id="grid-relojes" class="product-grid"></div>
-      <div id="empty-relojes" class="empty-state hidden">
-        <div class="empty-icon">⌚</div>
-        <h3>Sin relojes aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bocinas -->
-  <section id="sec-bocinas" class="catalog-section catalog-section-alt">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">🔊 Bocinas</h2>
-          <p class="catalog-sub">Sonido potente para cualquier ambiente</p>
-        </div>
-        <span class="catalog-count" id="count-bocinas">0 productos</span>
-      </div>
-      <div id="grid-bocinas" class="product-grid"></div>
-      <div id="empty-bocinas" class="empty-state hidden">
-        <div class="empty-icon">🔊</div>
-        <h3>Sin bocinas aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Cargadores -->
-  <section id="sec-cargadores" class="catalog-section">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">⚡ Cargadores</h2>
-          <p class="catalog-sub">Carga rápida y segura para tus dispositivos</p>
-        </div>
-        <span class="catalog-count" id="count-cargadores">0 productos</span>
-      </div>
-      <div id="grid-cargadores" class="product-grid"></div>
-      <div id="empty-cargadores" class="empty-state hidden">
-        <div class="empty-icon">⚡</div>
-        <h3>Sin cargadores aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Accesorios -->
-  <section id="sec-accesorios" class="catalog-section catalog-section-alt">
-    <div class="catalog-inner">
-      <div class="catalog-header">
-        <div>
-          <h2 class="catalog-title">🎒 Accesorios</h2>
-          <p class="catalog-sub">Fundas, cables, vidrios y más</p>
-        </div>
-        <span class="catalog-count" id="count-accesorios">0 productos</span>
-      </div>
-      <div id="grid-accesorios" class="product-grid"></div>
-      <div id="empty-accesorios" class="empty-state hidden">
-        <div class="empty-icon">🎒</div>
-        <h3>Sin accesorios aún</h3>
-        <p>El administrador aún no ha agregado productos en esta categoría.</p>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<!-- STORE INFO -->
-<section id="tienda" class="store-section">
-  <div class="store-inner">
-    <div class="store-left">
-      <p class="section-label">📍 Visítanos</p>
-      <h2 class="store-h2">Estamos en<br/>San Pedro Yepocapa, Chimaltenango</h2>
-      <p class="store-p">Te invitamos a visitar nuestra tienda, será un placer servirte.</p>
-      <div class="store-grid">
-        <div class="store-card"><div class="store-card-icon">📌</div><div><strong>Dirección</strong><p>San Pedro Yepocapa, Chimaltenango<br/>Tercer Cantón<br/>Chimaltenango</p></div></div>
-        <div class="store-card"><div class="store-card-icon">🕐</div><div><strong>Horario</strong><p>Lun – Vie: 8:00am – 8:00pm<br/>Sáb: 8:00am – 8:00pm<br/>Dom: 8:00am – 8:00pm</p></div></div>
-        <div class="store-card"><div class="store-card-icon">📞</div><div><strong>Contacto</strong><p>+502 5483-4689<br/>WhatsApp: +502 5483-4689</p></div></div>
-        <div class="store-card"><div class="store-card-icon">🔧</div><div><strong>Servicios</strong><p>Cambio de pantallas<br/>Liberaciones SIM<br/>Desbloqueado de equipos (FRP)</p></div></div>
-      </div>
-      <a href="https://maps.app.goo.gl/ygKxRL9UdeYd9qm97" target="_blank" class="btn-primary" style="margin-top:28px;display:inline-flex;">Ver en Google Maps →</a>
-    </div>
-    <div class="store-right">
-      <div class="map-box">
-        <div class="map-pin-anim">📍</div>
-        <p class="map-name">San Pedro Yepocapa, Chimaltenango</p>
-        <p class="map-zone">Tercer Cantón</p>
-        <div class="map-hours">
-          <div class="map-hour-row"><span>Lunes – Viernes</span><span>8:00am – 8:00pm</span></div>
-          <div class="map-hour-row"><span>Sábado</span><span>8:00am – 8:00pm</span></div>
-          <div class="map-hour-row"><span>Domingo</span><span>8:00am – 8:00pm</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHATSAPP FLOTANTE -->
-<a href="https://wa.me/50254834689?text=Hola%20quiero%20información%20sobre%20un%20producto" class="float-wa" target="_blank">
-  <i class="fa fa-whatsapp"></i>
-</a>
-
-<!-- PRODUCT DETAIL MODAL -->
-<div id="modal-product" class="modal-overlay hidden">
-  <div class="modal-shell">
-    <button class="modal-x" id="btn-close-modal" title="Cerrar">✕</button>
-    <div id="modal-content" class="modal-content-wrap"></div>
-  </div>
-</div>
-
-<!-- ZOOM OVERLAY -->
-<div id="zoom-overlay" class="zoom-overlay hidden">
-  <div class="zoom-bg" id="zoom-bg"></div>
-  <div class="zoom-container" id="zoom-container">
-    <img id="zoom-img" src="" alt="zoom"/>
-    <div class="zoom-lens" id="zoom-lens"></div>
-  </div>
-  <div class="zoom-result-wrap">
-    <div class="zoom-result" id="zoom-result"></div>
-  </div>
-  <button class="zoom-close" id="btn-close-zoom">✕</button>
-  <p class="zoom-hint">Mueve el cursor para hacer zoom · Click para cerrar</p>
-</div>
-
-<!-- ADMIN FLOATING BAR -->
-<div id="admin-bar" class="admin-bar hidden">
-  <div class="admin-bar-inner">
-    <span class="admin-bar-label">⚙️ Modo Admin</span>
-    <button class="admin-bar-btn" id="btn-open-panel">＋ Agregar</button>
-    <button class="admin-bar-btn" id="btn-manage-panel">📋 Gestionar</button>
-    <button class="admin-bar-btn danger" id="btn-logout">Salir</button>
-  </div>
-</div>
-
-<!-- LOGIN SECRETO -->
-<div id="admin-overlay" class="admin-overlay hidden">
-  <div id="login-panel" class="login-card">
-    <button class="card-x" id="btn-close-admin-panel">✕</button>
-    <div class="login-logo">◈</div>
-    <h2 class="login-title">Panel Admin</h2>
-    <p class="login-sub">Acceso solo para personal autorizado</p>
-    <div id="login-msg" class="alert hidden"></div>
-    <div class="field-group">
-      <label>Correo electrónico</label>
-      <input type="email" id="login-user" placeholder="admin@tecnologiayepocapa.com" autocomplete="off"/>
-    </div>
-    <div class="field-group">
-      <label>Contraseña</label>
-      <input type="password" id="login-pass" placeholder="••••••••"/>
-    </div>
-    <button class="btn-primary full" id="btn-login">Entrar →</button>
-  </div>
-
-  <div id="admin-panel" class="admin-panel hidden">
-    <div class="admin-header">
-      <div class="logo" style="gap:10px;display:flex;align-items:center;">
-        <div class="logo-mark" style="width:32px;height:32px;font-size:13px;">T</div>
-        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:var(--ink);">Panel Admin</span>
-      </div>
-      <div class="admin-header-actions">
-        <button class="btn-danger-outline" id="btn-logout-panel" style="font-size:12px;padding:7px 14px;">🚪 Cerrar sesión</button>
-        <button class="admin-close-x" id="btn-close-admin-x" title="Cerrar panel">✕</button>
-      </div>
-    </div>
-    <div class="admin-body">
-      <div class="admin-col admin-col-form">
-        <h3 class="admin-col-title">Agregar producto</h3>
-        <div id="form-msg" class="alert hidden"></div>
-        <div class="field-group">
-          <label>Categoría *</label>
-          <div class="cat-pills" id="cat-selector">
-            <button class="cat-pill active" data-sel="celulares">📱 Celulares</button>
-            <button class="cat-pill" data-sel="auriculares">🎧 Auriculares</button>
-            <button class="cat-pill" data-sel="relojes">⌚ Relojes</button>
-            <button class="cat-pill" data-sel="bocinas">🔊 Bocinas</button>
-            <button class="cat-pill" data-sel="cargadores">⚡ Cargadores</button>
-            <button class="cat-pill" data-sel="accesorios">🎒 Accesorios</button>
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Imágenes <span class="label-hint">(máx. 6)</span></label>
-          <div class="img-gallery-row" id="multi-img-gallery">
-            <button class="img-add-thumb" id="add-img-slot"><span>+</span><small>Agregar</small></button>
-          </div>
-          <div class="img-input-panel hidden" id="img-add-controls">
-            <div class="tab-row">
-              <button class="tab-btn active" data-tab="url">🔗 URL</button>
-              <button class="tab-btn" data-tab="file">📁 Archivo</button>
-            </div>
-            <div id="tab-url" class="tab-pane"><input type="url" id="img-url-input" placeholder="https://..."/></div>
-            <div id="tab-file" class="tab-pane hidden"><input type="file" id="img-file-input" accept="image/*" multiple/></div>
-            <div class="img-preview-strip" id="img-add-preview">
-              <span id="img-add-ph">Ingresa una URL o selecciona un archivo</span>
-              <img id="img-add-preview-img" class="hidden" alt=""/>
-            </div>
-            <div class="panel-actions">
-              <button class="btn-primary" id="btn-confirm-img" style="flex:1;margin:0;border-radius:10px;padding:10px 0;">✓ Añadir imagen</button>
-              <button class="btn-ghost-sm" id="btn-cancel-img">Cancelar</button>
-            </div>
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Colores disponibles *</label>
-          <div class="color-row">
-            <input type="text" id="color-input-text" placeholder="Negro, Blanco, Azul..."/>
-            <button class="btn-ghost-sm" id="btn-add-color">+ Agregar</button>
-          </div>
-          <div class="color-tag-list" id="color-chips"></div>
-        </div>
-        <div class="field-row">
-          <div class="field-group"><label>Nombre *</label><input type="text" id="prod-name" placeholder="Ej: iPhone 15 Pro"/></div>
-          <div class="field-group"><label>Marca *</label><input type="text" id="prod-brand" placeholder="Ej: Apple"/></div>
-        </div>
-        <div class="field-row">
-          <div class="field-group"><label>Precio (Q) *</label><input type="number" id="prod-price" placeholder="0.00" min="0"/></div>
-          <div class="field-group">
-            <label>Estado</label>
-            <select id="prod-estado">
-              <option value="disponible">✅ Disponible</option>
-              <option value="pocas">⚠️ Pocas unidades</option>
-              <option value="agotado">❌ Agotado</option>
-              <option value="preventa">🔔 Próximamente en local</option>
-            </select>
-          </div>
-        </div>
-        <div id="specs-celulares" class="specs-block">
-          <div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="prod-storage" placeholder="256GB"/></div><div class="field-group"><label>RAM *</label><input type="text" id="prod-ram" placeholder="8GB"/></div></div>
-          <div class="field-group"><label>Procesador *</label><input type="text" id="prod-cpu" placeholder="Apple A17 Pro"/></div>
-          <div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="prod-screen" placeholder='6.1" OLED 120Hz'/></div><div class="field-group"><label>Batería</label><input type="text" id="prod-battery" placeholder="4422 mAh"/></div></div>
-          <div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="prod-camara" placeholder="48MP"/></div><div class="field-group"><label>Sistema</label><input type="text" id="prod-os" placeholder="iOS 17"/></div></div>
-        </div>
-        <div id="specs-auriculares" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-auri" placeholder="Over-ear"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect" placeholder="Bluetooth 5.3"/></div></div>
-          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-autonomia" placeholder="30 horas"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="prod-anc" placeholder="ANC activa"/></div></div>
-        </div>
-        <div id="specs-relojes" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-reloj" placeholder="Smartwatch"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="prod-compat" placeholder="iOS / Android"/></div></div>
-          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-bat-reloj" placeholder="7 días"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="prod-resist" placeholder="5 ATM"/></div></div>
-        </div>
-        <div id="specs-bocinas" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Potencia *</label><input type="text" id="prod-potencia" placeholder="40W"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="prod-conect-boc" placeholder="Bluetooth 5.1"/></div></div>
-          <div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="prod-auto-boc" placeholder="20 horas"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="prod-agua" placeholder="IPX7"/></div></div>
-        </div>
-        <div id="specs-cargadores" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo de carga *</label><input type="text" id="prod-tipo-carga" placeholder="USB-C"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="prod-watts" placeholder="65W"/></div></div>
-          <div class="field-row"><div class="field-group"><label>Compatibilidad</label><input type="text" id="prod-compat-carg" placeholder="Universal"/></div><div class="field-group"><label>Puertos</label><input type="text" id="prod-puertos" placeholder="2x USB-C"/></div></div>
-        </div>
-        <div id="specs-accesorios" class="specs-block hidden">
-          <div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="prod-tipo-acc" placeholder="Funda, Cable..."/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="prod-compat-acc" placeholder="iPhone 15"/></div></div>
-          <div class="field-group"><label>Material</label><input type="text" id="prod-material" placeholder="Silicona, Cuero..."/></div>
-        </div>
-        <div class="field-group"><label>Descripción</label><textarea id="prod-desc" rows="3" placeholder="Describe el producto..."></textarea></div>
-        <button class="btn-primary full" id="btn-add-product" style="margin-top:4px;">+ Agregar producto</button>
-      </div>
-      <div class="admin-col admin-col-list">
-        <div class="admin-filter-row" id="admin-cat-filter">
-          <button class="filter-pill active" data-admin-cat="todos">Todos</button>
-          <button class="filter-pill" data-admin-cat="celulares">📱</button>
-          <button class="filter-pill" data-admin-cat="auriculares">🎧</button>
-          <button class="filter-pill" data-admin-cat="relojes">⌚</button>
-          <button class="filter-pill" data-admin-cat="bocinas">🔊</button>
-          <button class="filter-pill" data-admin-cat="cargadores">⚡</button>
-          <button class="filter-pill" data-admin-cat="accesorios">🎒</button>
-        </div>
-        <h3 class="admin-col-title">Productos <span id="admin-count" class="count-pill">0</span></h3>
-        <div id="admin-product-list" class="admin-list"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- EDIT MODAL -->
-<div id="modal-edit" class="modal-overlay hidden" style="z-index:500;">
-  <div class="modal-shell" style="max-width:780px;">
-    <button class="modal-x" id="btn-close-edit">✕</button>
-    <div style="padding:28px 24px;">
-      <h2 class="edit-title">Editar producto</h2>
-      <p id="edit-cat-label" class="edit-cat-sub"></p>
-      <div id="edit-msg" class="alert hidden"></div>
-      <div class="field-group">
-        <label>Imágenes</label>
-        <div class="img-gallery-row" id="edit-multi-img-gallery">
-          <button class="img-add-thumb" id="edit-add-img-slot"><span>+</span><small>Agregar</small></button>
-        </div>
-        <div class="img-input-panel hidden" id="edit-img-add-controls">
-          <div class="tab-row">
-            <button class="tab-btn active" data-edit-img-tab="url">🔗 URL</button>
-            <button class="tab-btn" data-edit-img-tab="file">📁 Archivo</button>
-          </div>
-          <div id="edit-tab-url"><input type="url" id="edit-img-url-input" placeholder="https://..."/></div>
-          <div id="edit-tab-file" class="hidden"><input type="file" id="edit-img-file-input" accept="image/*" multiple/></div>
-          <div class="img-preview-strip"><span id="edit-img-add-ph">Ingresa URL o archivo</span><img id="edit-img-add-preview-img" class="hidden" alt=""/></div>
-          <div class="panel-actions">
-            <button class="btn-primary" id="edit-btn-confirm-img" style="flex:1;margin:0;border-radius:10px;padding:10px 0;">✓ Añadir</button>
-            <button class="btn-ghost-sm" id="edit-btn-cancel-img">Cancelar</button>
-          </div>
-        </div>
-      </div>
-      <div class="field-group">
-        <label>Colores</label>
-        <div class="color-row"><input type="text" id="edit-color-input-text" placeholder="Negro, Blanco..."/><button class="btn-ghost-sm" id="edit-btn-add-color">+ Agregar</button></div>
-        <div class="color-tag-list" id="edit-color-chips"></div>
-      </div>
-      <div class="field-row"><div class="field-group"><label>Nombre *</label><input type="text" id="edit-name"/></div><div class="field-group"><label>Marca *</label><input type="text" id="edit-brand"/></div></div>
-      <div class="field-row"><div class="field-group"><label>Precio (Q) *</label><input type="number" id="edit-price" min="0"/></div><div class="field-group"><label>Estado</label><select id="edit-estado"><option value="disponible">✅ Disponible</option><option value="pocas">⚠️ Pocas unidades</option><option value="agotado">❌ Agotado</option><option value="preventa">🔔 Próximamente en local</option></select></div></div>
-      <div id="edit-specs-celulares" class="specs-block"><div class="field-row"><div class="field-group"><label>Almacenamiento *</label><input type="text" id="edit-storage"/></div><div class="field-group"><label>RAM *</label><input type="text" id="edit-ram"/></div></div><div class="field-group"><label>Procesador *</label><input type="text" id="edit-cpu"/></div><div class="field-row"><div class="field-group"><label>Pantalla</label><input type="text" id="edit-screen"/></div><div class="field-group"><label>Batería</label><input type="text" id="edit-battery"/></div></div><div class="field-row"><div class="field-group"><label>Cámara</label><input type="text" id="edit-camara"/></div><div class="field-group"><label>Sistema</label><input type="text" id="edit-os"/></div></div></div>
-      <div id="edit-specs-auriculares" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-auri"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-autonomia"/></div><div class="field-group"><label>Cancel. ruido</label><input type="text" id="edit-anc"/></div></div></div>
-      <div id="edit-specs-relojes" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-reloj"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-bat-reloj"/></div><div class="field-group"><label>Resistencia</label><input type="text" id="edit-resist"/></div></div></div>
-      <div id="edit-specs-bocinas" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Potencia *</label><input type="text" id="edit-potencia"/></div><div class="field-group"><label>Conectividad *</label><input type="text" id="edit-conect-boc"/></div></div><div class="field-row"><div class="field-group"><label>Autonomía</label><input type="text" id="edit-auto-boc"/></div><div class="field-group"><label>Resist. agua</label><input type="text" id="edit-agua"/></div></div></div>
-      <div id="edit-specs-cargadores" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo carga *</label><input type="text" id="edit-tipo-carga"/></div><div class="field-group"><label>Potencia *</label><input type="text" id="edit-watts"/></div></div><div class="field-row"><div class="field-group"><label>Compatibilidad</label><input type="text" id="edit-compat-carg"/></div><div class="field-group"><label>Puertos</label><input type="text" id="edit-puertos"/></div></div></div>
-      <div id="edit-specs-accesorios" class="specs-block hidden"><div class="field-row"><div class="field-group"><label>Tipo *</label><input type="text" id="edit-tipo-acc"/></div><div class="field-group"><label>Compatibilidad *</label><input type="text" id="edit-compat-acc"/></div></div><div class="field-group"><label>Material</label><input type="text" id="edit-material"/></div></div>
-      <div class="field-group"><label>Descripción</label><textarea id="edit-desc" rows="2"></textarea></div>
-      <input type="hidden" id="edit-id"/>
-      <button class="btn-primary full" id="btn-save-edit" style="margin-top:4px;">💾 Guardar cambios</button>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="logo" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+  <!-- HEADER -->
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="#" class="logo">
         <div class="logo-mark">T</div>
-        <div class="logo-text-wrap"><span class="logo-name">Tecnología</span><span class="logo-country">Yepocapa</span></div>
+        <div class="logo-text-wrap">
+          <span class="logo-name">Tecnología</span>
+          <span class="logo-country">Yepocapa</span>
+        </div>
+      </a>
+      <nav class="cat-nav" id="cat-nav">
+        <a class="cat-nav-link" href="#sec-celulares">📱 Celulares</a>
+        <a class="cat-nav-link" href="#sec-auriculares">🎧 Auriculares</a>
+        <a class="cat-nav-link" href="#sec-relojes">⌚ Relojes</a>
+        <a class="cat-nav-link" href="#sec-bocinas">🔊 Bocinas</a>
+        <a class="cat-nav-link" href="#sec-cargadores">⚡ Cargadores</a>
+        <a class="cat-nav-link" href="#sec-accesorios">🎒 Accesorios</a>
+      </nav>
+      <div class="header-end">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Buscar productos..." />
+          <button class="search-clear-btn" id="search-clear-btn" title="Limpiar">✕</button>
+        </div>
+        <button class="ham-btn" id="hamburger" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
       </div>
-      <p>Tu tienda de tecnología de confianza.<br/>Productos 100% originales con garantía.</p>
     </div>
-    <div class="footer-col">
-      <h4>Categorías</h4>
-      <a href="#sec-celulares">📱 Celulares</a>
-      <a href="#sec-auriculares">🎧 Auriculares</a>
-      <a href="#sec-relojes">⌚ Relojes</a>
-      <a href="#sec-bocinas">🔊 Bocinas</a>
-      <a href="#sec-cargadores">⚡ Cargadores</a>
-      <a href="#sec-accesorios">🎒 Accesorios</a>
+    <div class="mobile-nav hidden" id="mobile-nav">
+      <a class="cat-btn" href="#sec-celulares">📱 Celulares</a>
+      <a class="cat-btn" href="#sec-auriculares">🎧 Auriculares</a>
+      <a class="cat-btn" href="#sec-relojes">⌚ Relojes</a>
+      <a class="cat-btn" href="#sec-bocinas">🔊 Bocinas</a>
+      <a class="cat-btn" href="#sec-cargadores">⚡ Cargadores</a>
+      <a class="cat-btn" href="#sec-accesorios">🎒 Accesorios</a>
+      <div class="mobile-search">
+        <span>🔍</span>
+        <input type="text" id="search-mobile" placeholder="Buscar..." />
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Contacto</h4>
-      <p>📞 +502 5483-4689</p>
-      <p>💬 +502 5483-4689</p>
-      <p>📍 San Pedro Yepocapa, Chimaltenango, Tercer Cantón</p>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-tag">🇬🇹 Tienda oficial en San Pedro Yepocapa</div>
+        <h1 class="hero-h1">
+          La tecnología<br />
+          <span class="line2">que buscas,</span><br />
+          <em>al mejor precio</em>
+        </h1>
+        <p class="hero-desc">Celulares, auriculares, relojes inteligentes, bocinas, cargadores y accesorios. Todo
+          original, todo con garantía.</p>
+        <div class="hero-actions">
+          <a href="#sec-celulares" class="btn-primary">Ver catálogo →</a>
+          <a href="#tienda" class="btn-secondary">📍 Nuestra tienda</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">100<span>%</span></div>
+            <div class="hero-stat-label">Equipos verificados</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">100<span>%</span></div>
+            <div class="hero-stat-label">Original</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">100<span>%</span></div>
+            <div class="hero-stat-label">Garantía incluida</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-phone-glow"></div>
+        <div class="hero-grid-cards">
+          <a class="hero-card c1" href="#sec-celulares">
+            <div class="hero-card-icon">📱</div><span>Celulares</span>
+          </a>
+          <a class="hero-card c2" href="#sec-auriculares">
+            <div class="hero-card-icon">🎧</div><span>Auriculares</span>
+          </a>
+          <a class="hero-card c3" href="#sec-relojes">
+            <div class="hero-card-icon">⌚</div><span>Relojes</span>
+          </a>
+          <a class="hero-card c4" href="#sec-bocinas">
+            <div class="hero-card-icon">🔊</div><span>Bocinas</span>
+          </a>
+          <a class="hero-card c5" href="#sec-cargadores">
+            <div class="hero-card-icon">⚡</div><span>Cargadores</span>
+          </a>
+          <a class="hero-card c6" href="#sec-accesorios">
+            <div class="hero-card-icon">🎒</div><span>Accesorios</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <div id="catalogo" class="all-catalogs">
+
+    <!-- Celulares -->
+    <section id="sec-celulares" class="catalog-section">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">📱 Celulares</h2>
+            <p class="catalog-sub">Los mejores smartphones del mercado</p>
+          </div>
+          <span class="catalog-count" id="count-celulares">0 productos</span>
+        </div>
+        <div id="grid-celulares" class="product-grid"></div>
+        <div id="empty-celulares" class="empty-state hidden">
+          <div class="empty-icon">📱</div>
+          <h3>Sin celulares aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Auriculares -->
+    <section id="sec-auriculares" class="catalog-section catalog-section-alt">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">🎧 Auriculares</h2>
+            <p class="catalog-sub">Audio de alta calidad para cada momento</p>
+          </div>
+          <span class="catalog-count" id="count-auriculares">0 productos</span>
+        </div>
+        <div id="grid-auriculares" class="product-grid"></div>
+        <div id="empty-auriculares" class="empty-state hidden">
+          <div class="empty-icon">🎧</div>
+          <h3>Sin auriculares aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relojes -->
+    <section id="sec-relojes" class="catalog-section">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">⌚ Relojes</h2>
+            <p class="catalog-sub">Smartwatches y relojes de última generación</p>
+          </div>
+          <span class="catalog-count" id="count-relojes">0 productos</span>
+        </div>
+        <div id="grid-relojes" class="product-grid"></div>
+        <div id="empty-relojes" class="empty-state hidden">
+          <div class="empty-icon">⌚</div>
+          <h3>Sin relojes aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bocinas -->
+    <section id="sec-bocinas" class="catalog-section catalog-section-alt">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">🔊 Bocinas</h2>
+            <p class="catalog-sub">Sonido potente para cualquier ambiente</p>
+          </div>
+          <span class="catalog-count" id="count-bocinas">0 productos</span>
+        </div>
+        <div id="grid-bocinas" class="product-grid"></div>
+        <div id="empty-bocinas" class="empty-state hidden">
+          <div class="empty-icon">🔊</div>
+          <h3>Sin bocinas aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cargadores -->
+    <section id="sec-cargadores" class="catalog-section">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">⚡ Cargadores</h2>
+            <p class="catalog-sub">Carga rápida y segura para tus dispositivos</p>
+          </div>
+          <span class="catalog-count" id="count-cargadores">0 productos</span>
+        </div>
+        <div id="grid-cargadores" class="product-grid"></div>
+        <div id="empty-cargadores" class="empty-state hidden">
+          <div class="empty-icon">⚡</div>
+          <h3>Sin cargadores aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accesorios -->
+    <section id="sec-accesorios" class="catalog-section catalog-section-alt">
+      <div class="catalog-inner">
+        <div class="catalog-header">
+          <div>
+            <h2 class="catalog-title">🎒 Accesorios</h2>
+            <p class="catalog-sub">Fundas, cables, vidrios y más</p>
+          </div>
+          <span class="catalog-count" id="count-accesorios">0 productos</span>
+        </div>
+        <div id="grid-accesorios" class="product-grid"></div>
+        <div id="empty-accesorios" class="empty-state hidden">
+          <div class="empty-icon">🎒</div>
+          <h3>Sin accesorios aún</h3>
+          <p>El administrador aún no ha agregado productos en esta categoría.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- STORE INFO -->
+  <section id="tienda" class="store-section">
+    <div class="store-inner">
+      <div class="store-left">
+        <p class="section-label">📍 Visítanos</p>
+        <h2 class="store-h2">Estamos en<br />San Pedro Yepocapa, Chimaltenango</h2>
+        <p class="store-p">Te invitamos a visitar nuestra tienda, será un placer servirte.</p>
+        <div class="store-grid">
+          <div class="store-card">
+            <div class="store-card-icon">📌</div>
+            <div><strong>Dirección</strong>
+              <p>San Pedro Yepocapa, Chimaltenango<br />Tercer Cantón<br />Chimaltenango</p>
+            </div>
+          </div>
+          <div class="store-card">
+            <div class="store-card-icon">🕐</div>
+            <div><strong>Horario</strong>
+              <p>Lun – Vie: 8:00am – 8:00pm<br />Sáb: 8:00am – 8:00pm<br />Dom: 8:00am – 8:00pm</p>
+            </div>
+          </div>
+          <div class="store-card">
+            <div class="store-card-icon">📞</div>
+            <div><strong>Contacto</strong>
+              <p>+502 5483-4689<br />WhatsApp: +502 5483-4689</p>
+            </div>
+          </div>
+          <div class="store-card">
+            <div class="store-card-icon">🔧</div>
+            <div><strong>Servicios</strong>
+              <p>Cambio de pantallas<br />Liberaciones SIM<br />Desbloqueado de equipos (FRP)</p>
+            </div>
+          </div>
+        </div>
+        <a href="https://maps.app.goo.gl/ygKxRL9UdeYd9qm97" target="_blank" class="btn-primary"
+          style="margin-top:28px;display:inline-flex;">Ver en Google Maps →</a>
+      </div>
+      <div class="store-right">
+        <div class="map-box">
+          <div class="map-pin-anim">📍</div>
+          <p class="map-name">San Pedro Yepocapa, Chimaltenango</p>
+          <p class="map-zone">Tercer Cantón</p>
+          <div class="map-hours">
+            <div class="map-hour-row"><span>Lunes – Viernes</span><span>8:00am – 8:00pm</span></div>
+            <div class="map-hour-row"><span>Sábado</span><span>8:00am – 8:00pm</span></div>
+            <div class="map-hour-row"><span>Domingo</span><span>8:00am – 8:00pm</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHATSAPP FLOTANTE -->
+  <a href="https://wa.me/50254834689?text=Hola%20quiero%20información%20sobre%20un%20producto" class="float-wa"
+    target="_blank">
+    <i class="fa fa-whatsapp"></i>
+  </a>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div id="modal-product" class="modal-overlay hidden">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-shell">
+      <button class="modal-x" id="btn-close-modal" title="Cerrar">✕</button>
+      <div id="modal-content" class="modal-content-wrap"></div>
     </div>
   </div>
-  <div class="footer-bottom" id="secret-login-trigger" style="user-select:none;">© 2025 Tecnología-Yepocapa · Todos los derechos reservados</div>
-</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="script.js"></script>
+  <!-- IMAGE GALLERY MODAL -->
+  <div id="gallery-modal" class="gallery-modal-overlay hidden">
+    <div class="gallery-modal-backdrop" id="gallery-modal-backdrop"></div>
+    <div class="gallery-modal-shell">
+      <button class="gallery-modal-close" id="btn-close-gallery">✕</button>
+      <div class="gallery-modal-main">
+        <button class="gallery-modal-arrow left" id="gal-modal-prev">&#8249;</button>
+        <div class="gallery-modal-img-wrap">
+          <img id="gallery-modal-img" src="" alt="" />
+        </div>
+        <button class="gallery-modal-arrow right" id="gal-modal-next">&#8250;</button>
+      </div>
+      <div class="gallery-modal-dots" id="gallery-modal-dots"></div>
+      <div class="gallery-modal-thumbs" id="gallery-modal-thumbs"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo" style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="logo-mark">T</div>
+          <div class="logo-text-wrap"><span class="logo-name">Tecnología</span><span
+              class="logo-country">Yepocapa</span></div>
+        </div>
+        <p>Tu tienda de tecnología de confianza.<br />Productos 100% originales con garantía.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Categorías</h4>
+        <a href="#sec-celulares">📱 Celulares</a>
+        <a href="#sec-auriculares">🎧 Auriculares</a>
+        <a href="#sec-relojes">⌚ Relojes</a>
+        <a href="#sec-bocinas">🔊 Bocinas</a>
+        <a href="#sec-cargadores">⚡ Cargadores</a>
+        <a href="#sec-accesorios">🎒 Accesorios</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <p>📞 +502 5483-4689</p>
+        <p>💬 +502 5483-4689</p>
+        <p>📍 San Pedro Yepocapa, Chimaltenango, Tercer Cantón</p>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 Tecnología-Yepocapa · Todos los derechos reservados</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
